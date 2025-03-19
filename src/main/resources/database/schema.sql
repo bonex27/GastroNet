@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Prodotto_Ingrediente (
                                                     PRIMARY KEY (prodotto_id, ingrediente_id)
 );
 
--- Creazione tabella Ordine
+-- Creazione tabella domainModel.Ordine
 CREATE TABLE IF NOT EXISTS Ordine (
                                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                                       cliente_id INTEGER NOT NULL,
