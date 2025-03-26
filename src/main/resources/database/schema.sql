@@ -1,3 +1,7 @@
+
+DROP TABLE IF EXISTS Customers;
+drop table  if exists  attendant;
+
 -- Creazione tabella Ingrediente
 CREATE TABLE IF NOT EXISTS Ingrediente (
                                            id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +35,7 @@ CREATE TABLE IF NOT EXISTS Prodotto_Ingrediente (
                                                     PRIMARY KEY (prodotto_id, ingrediente_id)
 );
 
--- Creazione tabella domainModel.Ordine
+-- Creazione tabella domainModel.Order
 CREATE TABLE IF NOT EXISTS Ordine (
                                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                                       cliente_id INTEGER NOT NULL,
@@ -40,8 +44,18 @@ CREATE TABLE IF NOT EXISTS Ordine (
 );
 
 -- Creazione tabella Cliente
-CREATE TABLE IF NOT EXISTS Cliente (
-                                       id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                       nome TEXT NOT NULL,
-                                       email TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS Customers (
+                                       fiscal_code TEXT PRIMARY KEY,
+                                       name TEXT NOT NULL,
+                                       surname TEXT NOT NULL,
+                                       payment_method TEXT not null
+);
+
+-- Table: Attendant
+CREATE TABLE IF NOT EXISTS attendant
+(
+    fiscal_code TEXT PRIMARY KEY,
+    name        TEXT NOT NULL,
+    surname     TEXT NOT NULL,
+    iban        TEXT NOT NULL
 );
