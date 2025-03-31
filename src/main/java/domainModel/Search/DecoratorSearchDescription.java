@@ -1,16 +1,22 @@
 package domainModel.Search;
 
+import java.util.List;
+
 public class DecoratorSearchDescription extends BaseDecoratorSearch {
-    private final String str;
+    private final String[] str;
 
     public DecoratorSearchDescription(Search decoratedSearch, String str) {
         super(decoratedSearch);
-        this.str = str;
+        this.str = str.split(" ");
     }
 
-    // TODO: corrispondenza su singola parola, dividere this.str e iterare
     @Override
     public String getSearchQuery() {
-        return super.getSearchQuery() + " AND p.name LIKE '%" + this.str + "%'";
+        String strOut = "";
+        for (int i = 0; i < str.length; i++) {
+            strOut += "p.name LIKE '%" + str[i] + "%'";
+            if (i != str.length - 1) strOut += " OR ";
+        }
+        return super.getSearchQuery() + " AND (" + strOut +")";
     }
 }

@@ -4,11 +4,12 @@ public class SearchConcrete implements Search {
 
     private final String query;
 
-    // TODO: filtro disponibilità (stock)
-    public SearchConcrete(){
-        this.query = "SELECT p.* FROM products p WHERE p.stock>0";
+    public SearchConcrete(boolean stock) {
+        this.query = "SELECT p.* FROM products p WHERE p.stock>" + (stock ? "0" : "-1");
     }
 
     @Override
-    public String getSearchQuery() { return this.query; }
+    public String getSearchQuery() {
+        return this.query;
+    }
 }
