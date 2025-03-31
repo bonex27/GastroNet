@@ -1,5 +1,7 @@
 import businessLogic.AttendantController;
+import businessLogic.CategoryController;
 import businessLogic.CustomerController;
+import businessLogic.ProductController;
 import dao.*;
 import domainModel.Attendant;
 import domainModel.Category;
@@ -11,16 +13,23 @@ public class Main {
         Database.setDatabase("main.db");
         Database.initDatabase();
 
+        //DAO instance
         CustomerDAO customerDAO = new SQLiteCustomerDAO();
         AttendantDAO attendantDAO = new SQLiteAttendantDAO();
+        CategoryDAO categoryDAO = new SQLiteCategoryDAO();
+        ProductDAO productDAO = new SQLiteProductDAO();
 
+        //Controller instance
         AttendantController attendantController = new AttendantController(attendantDAO);
         CustomerController customerController = new CustomerController(customerDAO);
-
+        CategoryController categoryController = new CategoryController(categoryDAO);
+        ProductController productController = new ProductController(productDAO);
 
         attendantController.addAttendant("Giovanni","Rossi","GVBSDB","IT44123123");
-        customerController.addCustomer("pietro","bonechi","BNCPTR","CreditCard");
+        customerController.addCustomer("Pietro","Bonechi","BNCPTR","CreditCard");
 
+        Category firstCourse = categoryController.CreateCategory("First course");
+        int lasagna = productController.AddProduct("Lasagna","it is made of stacked layers of pasta alternating with fillings such as ragù",6.50,firstCourse,10);
 
 
     }

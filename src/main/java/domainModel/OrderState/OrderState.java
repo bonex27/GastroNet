@@ -1,7 +1,15 @@
 package domainModel.OrderState;
 
-public interface OrderState {
+public abstract class OrderState {
+    private String state;
 
-    void nextState();
-    String getState();
+    public String getState()
+    {
+        return state;
+    }
+
+    public void nextState()
+    {
+
+    }
 }

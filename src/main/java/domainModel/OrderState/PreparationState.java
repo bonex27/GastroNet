@@ -1,6 +1,6 @@
 package domainModel.OrderState;
 
-public class PreparationState implements OrderState {
+public class PreparationState extends OrderState {
     @Override
     public void nextState() {
 
