@@ -1,47 +1,32 @@
 
 DROP TABLE IF EXISTS Customers;
-drop table  if exists  attendant;
+DROP TABLE   if exists  attendant;
+DROP TABLE   if exists  Products;
+DROP TABLE   if exists  Category;
+DROP TABLE   if exists  "Order";
 
--- Creazione tabella Ingrediente
-CREATE TABLE IF NOT EXISTS Ingrediente (
-                                           id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                           nome TEXT NOT NULL,
-                                           disponibile INTEGER NOT NULL,
-                                           impegnato INTEGER NOT NULL
-);
+
+
 
 -- Creazione tabella Categoria
-CREATE TABLE IF NOT EXISTS Categoria (
+CREATE TABLE IF NOT EXISTS Category (
                                          id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                         nome TEXT NOT NULL
+                                         description TEXT NOT NULL
 );
 
 -- Creazione tabella prodotto
-CREATE TABLE IF NOT EXISTS Prodotto (
+CREATE TABLE IF NOT EXISTS Products (
                                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                        nome TEXT NOT NULL,
-                                        prezzo REAL NOT NULL,
-                                        categoria_id INTEGER,
-                                        FOREIGN KEY (categoria_id) REFERENCES Categoria(id)
+                                        name TEXT NOT NULL,
+                                        description TEXT NOT NULL,
+                                        price REAL NOT NULL,
+                                        id_category INTEGER,
+                                        stock INTEGER,
+                                        FOREIGN KEY (id_category) REFERENCES Category(id)
 );
 
--- Creazione tabella Prodotto_Ingrediente (relazione molti-a-molti)
-CREATE TABLE IF NOT EXISTS Prodotto_Ingrediente (
-                                                    prodotto_id INTEGER,
-                                                    ingrediente_id INTEGER,
-                                                    quantita INTEGER NOT NULL,
-                                                    FOREIGN KEY (prodotto_id) REFERENCES Prodotto(id),
-                                                    FOREIGN KEY (ingrediente_id) REFERENCES Ingrediente(id),
-                                                    PRIMARY KEY (prodotto_id, ingrediente_id)
-);
 
--- Creazione tabella domainModel.Order
-CREATE TABLE IF NOT EXISTS Ordine (
-                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                      cliente_id INTEGER NOT NULL,
-                                      stato TEXT NOT NULL,
-                                      FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
-);
+
 
 -- Creazione tabella Cliente
 CREATE TABLE IF NOT EXISTS Customers (
@@ -58,4 +43,12 @@ CREATE TABLE IF NOT EXISTS attendant
     name        TEXT NOT NULL,
     surname     TEXT NOT NULL,
     iban        TEXT NOT NULL
+);
+
+-- Creazione tabella domainModel.Order
+CREATE TABLE IF NOT EXISTS "Order" (
+                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                     cliente_id INTEGER NOT NULL,
+                                     stato TEXT NOT NULL,
+                                     FOREIGN KEY (cliente_id) REFERENCES Customers(fiscal_code)
 );
