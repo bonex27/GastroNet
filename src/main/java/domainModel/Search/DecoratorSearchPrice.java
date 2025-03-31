@@ -12,6 +12,8 @@ public class DecoratorSearchPrice extends BaseDecoratorSearch {
 
     @Override
     public String getSearchQuery() {
-        return super.getSearchQuery() + " AND p.price > '" + this.minPrice + "' AND p.price < '" + this.maxPrice + "'";
+        return super.getSearchQuery()
+                + (super.getSearchQuery().endsWith("WHERE") ? " " : " AND ")
+                + "p.price > '" + this.minPrice + "' AND p.price < '" + this.maxPrice + "'";
     }
 }

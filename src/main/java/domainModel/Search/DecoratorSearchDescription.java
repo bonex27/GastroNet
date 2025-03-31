@@ -12,11 +12,10 @@ public class DecoratorSearchDescription extends BaseDecoratorSearch {
 
     @Override
     public String getSearchQuery() {
-        String strOut = "";
+        String strOut = super.getSearchQuery() + (super.getSearchQuery().endsWith("WHERE") ? " (" : " AND (");
         for (int i = 0; i < str.length; i++) {
-            strOut += "p.name LIKE '%" + str[i] + "%'";
-            if (i != str.length - 1) strOut += " OR ";
+            strOut += "p.name LIKE '%" + str[i] + "%'" + ((i != str.length - 1) ? " OR " : ")");
         }
-        return super.getSearchQuery() + " AND (" + strOut +")";
+        return strOut;
     }
 }

@@ -10,6 +10,8 @@ public class DecoratorSearchName extends BaseDecoratorSearch {
 
     @Override
     public String getSearchQuery() {
-        return super.getSearchQuery() + " AND p.name = '" + this.name + "'";
+        return super.getSearchQuery()
+                + (super.getSearchQuery().endsWith("WHERE") ? " " : " AND ")
+                + "p.name = '" + this.name + "'";
     }
 }
