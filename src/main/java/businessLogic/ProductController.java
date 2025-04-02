@@ -4,6 +4,9 @@ import dao.ProductDAO;
 import domainModel.Category;
 import domainModel.Product;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductController {
     ProductDAO productDAO;
 
@@ -21,8 +24,15 @@ public class ProductController {
         Product product = productDAO.get(idProduct);
         productDAO.IncreaseStock(product,quantity);
     }
-    public boolean Decrease(int idProduct, int quantity) throws Exception {
+    public boolean DecreaseProductQuantity(int idProduct, int quantity) throws Exception {
         Product product = productDAO.get(idProduct);
         return productDAO.DecreaseStock(product,quantity);
+    }
+
+    public List<Product> GetProductList() throws Exception {
+
+
+
+        return productDAO.getAll();
     }
 }

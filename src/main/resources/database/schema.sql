@@ -1,6 +1,6 @@
 
 DROP TABLE IF EXISTS Customers;
-DROP TABLE   if exists  attendant;
+DROP TABLE   if exists  Attendant;
 DROP TABLE   if exists  Products;
 DROP TABLE   if exists  Category;
 DROP TABLE   if exists  "Order";
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS Customers (
 );
 
 -- Table: Attendant
-CREATE TABLE IF NOT EXISTS attendant
+CREATE TABLE IF NOT EXISTS Attendant
 (
     fiscal_code TEXT PRIMARY KEY,
     name        TEXT NOT NULL,

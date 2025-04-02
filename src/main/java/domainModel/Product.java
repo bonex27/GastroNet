@@ -45,8 +45,12 @@ public class Product {
     }
 
     //Setters
-
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Name=" + name + ", category=" + category + ", price=" + price + ", stock=" + stock + "remaining";
     }
 }
