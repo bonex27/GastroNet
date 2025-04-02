@@ -126,9 +126,9 @@ public class SQLiteProductDAO implements ProductDAO {
     public boolean DecreaseStock(Product product, int quantity) throws Exception {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE Products SET stock = ? WHERE id = ? and stock > ?");
-        ps.setInt(1, quantity - product.getStock());
+        ps.setInt(1, product.getStock()- quantity);
         ps.setInt(2, product.getId());
-        ps.setInt(2, product.getStock());
+        ps.setInt(3, quantity);
         int updated = ps.executeUpdate();
 
         ps.close();

@@ -30,8 +30,9 @@ public class Main {
 
         Category firstCourse = categoryController.CreateCategory("First course");
         int idLasagna = productController.AddProduct("Lasagna","it is made of stacked layers of pasta alternating with fillings such as ragù",6.50,firstCourse,10);
-        productController.IncreaseProductQuantity(idLasagna,10);
 
+        //Test decrease and increase
+        productController.IncreaseProductQuantity(idLasagna,10);
         boolean decreased = productController.Decrease(idLasagna,25);
         System.out.println("Product decreased: " + decreased);
         decreased = productController.Decrease(idLasagna,15);
