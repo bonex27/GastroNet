@@ -10,11 +10,13 @@ import java.util.List;
 
 public class SQLiteProductDAO implements ProductDAO {
 
+    //TODO: get() pruduct
     @Override
     public Product get(Integer integer) throws Exception {
         return null;
     }
 
+    //TODO: getAll() pruduct
     @Override
     public List<Product> getAll() throws Exception {
         return List.of();
@@ -37,11 +39,14 @@ public class SQLiteProductDAO implements ProductDAO {
         Database.closeConnection(con);
     }
 
+
+    //TODO: update() pruduct
     @Override
     public void update(Product product) throws Exception {
 
     }
 
+    //TODO: delete() pruduct
     @Override
     public boolean delete(Integer integer) throws Exception {
         return false;

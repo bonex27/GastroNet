@@ -47,11 +47,13 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         Database.closeConnection(conn);
     }
 
+    //TODO: update() category
     @Override
     public void update(Category category) throws Exception {
 
     }
 
+    //TODO: delete() category
     @Override
     public boolean delete(Integer integer) throws Exception {
         return false;
