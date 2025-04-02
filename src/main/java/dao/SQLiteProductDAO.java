@@ -1,25 +1,70 @@
 package dao;
 
+import domainModel.Category;
 import domainModel.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteProductDAO implements ProductDAO {
 
-    //TODO: get() pruduct
-    @Override
-    public Product get(Integer integer) throws Exception {
-        return null;
+    private final CategoryDAO categoryDAO;
+
+    public SQLiteProductDAO(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
     }
 
-    //TODO: getAll() pruduct
+    @Override
+    public Product get(Integer id) throws Exception {
+        Connection conn = Database.getConnection();
+        PreparedStatement ps = conn.prepareStatement("select * from products where id = ?");
+        ps.setString(1, id.toString());
+        ResultSet rs = ps.executeQuery();
+        Product product = null;
+
+        if (rs.next()) {
+            product = new Product(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock"),
+                    categoryDAO.get(rs.getInt("id_category"))
+            );
+        }
+        rs.close();
+        ps.close();
+        Database.closeConnection(conn);
+
+        return product;
+    }
+
     @Override
     public List<Product> getAll() throws Exception {
-        return List.of();
+        Connection conn = Database.getConnection();
+        PreparedStatement ps = conn.prepareStatement("select * from products");
+        ResultSet rs = ps.executeQuery();
+        List<Product> products = new ArrayList<>();
+
+        while (rs.next()) {
+            products.add(new Product(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock"),
+                    categoryDAO.get(rs.getInt("id_category"))
+            ));
+        }
+        rs.close();
+        ps.close();
+        Database.closeConnection(conn);
+
+        return products;
     }
 
     @Override

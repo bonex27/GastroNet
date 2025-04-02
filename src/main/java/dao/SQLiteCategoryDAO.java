@@ -31,6 +31,7 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         return  category;
     }
 
+    //TODO: getAll() category
     @Override
     public List<Category> getAll() throws Exception {
         return List.of();
