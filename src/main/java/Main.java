@@ -1,7 +1,4 @@
-import businessLogic.AttendantController;
-import businessLogic.CategoryController;
-import businessLogic.CustomerController;
-import businessLogic.ProductController;
+import businessLogic.*;
 import dao.*;
 import domainModel.Category;
 import domainModel.Product;
@@ -18,15 +15,17 @@ public class Main {
         AttendantDAO attendantDAO = new SQLiteAttendantDAO();
         CategoryDAO categoryDAO = new SQLiteCategoryDAO();
         ProductDAO productDAO = new SQLiteProductDAO(categoryDAO);
+        OrderDAO orderDAO = new SQLiteOrderDAO();
 
         //Controller instance
         AttendantController attendantController = new AttendantController(attendantDAO);
         CustomerController customerController = new CustomerController(customerDAO);
         CategoryController categoryController = new CategoryController(categoryDAO);
         ProductController productController = new ProductController(productDAO);
+        OrderController orderController = new OrderController(orderDAO,productDAO,customerDAO);
 
-        attendantController.addAttendant("Giovanni","Rossi","GVBSDB","IT44123123");
-        customerController.addCustomer("Pietro","Bonechi","BNCPTR","CreditCard");
+          attendantController.addAttendant("Giovanni","Rossi","GVBSDB","IT44123123");
+        String idCustomer1 =  customerController.addCustomer("Pietro","Bonechi","BNCPTR","CreditCard");
 
         Category firstCourse = categoryController.CreateCategory("First course");
         Category secondCourse = categoryController.CreateCategory("Second course");
@@ -53,6 +52,9 @@ public class Main {
         for (Product product : products) {
             System.out.println(product);
         }
+
+        //Order creation
+        int idOrder1 = orderController.createOrder(idCustomer1);
 
         //Test decrease and increase
         /*productController.IncreaseProductQuantity(idLasagna,10);

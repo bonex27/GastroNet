@@ -1,5 +1,6 @@
 package domainModel;
 
+import domainModel.OrderState.CustomerChoosingState;
 import domainModel.OrderState.OrderState;
 import domainModel.OrderState.PendingState;
 
@@ -17,9 +18,19 @@ public class Order {
         this.id = id;
         this.customer = customer;
         this.products = new ArrayList<Product>();
-        this.state = new PendingState();
+        this.state = new CustomerChoosingState();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getCustomerId() {
+       return customer.getCf();
+    }
+    public String getState() {
+        return state.getState();
+    }
     public void AddProduct(Product product) {
         this.products.add(product);
     }

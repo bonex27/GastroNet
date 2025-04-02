@@ -21,10 +21,10 @@ public class SQLiteCustomerDAO implements CustomerDAO {
 
         if (rs.next()) {
             customer = new Customer(
-                    rs.getString("fiscal_code"),
                     rs.getString("name"),
                     rs.getString("surname"),
-                    rs.getString("paymentMethod")
+                    rs.getString("fiscal_code"),
+                    rs.getString("payment_Method")
             );
         }
         rs.close();

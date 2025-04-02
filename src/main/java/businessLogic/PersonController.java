@@ -12,7 +12,7 @@ public abstract class PersonController<T extends Person> {
 
     protected String addPerson(T newPerson) throws Exception {
         this.dao.insert(newPerson);
-        return newPerson.getFirstName() + " " + newPerson.getLastName();
+        return newPerson.getCf();
     }
 
     protected boolean deletePerson(String fiscalCode) throws Exception {
