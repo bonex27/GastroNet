@@ -80,28 +80,38 @@ public class SQLiteProductDAO implements ProductDAO {
         ps.executeUpdate();
 
         ps.close();
-
         Database.closeConnection(con);
     }
 
-
-    //TODO: update() pruduct
     @Override
     public void update(Product product) throws Exception {
+        Connection conn = Database.getConnection();
+        PreparedStatement ps = conn.prepareStatement("UPDATE Products SET name = (?), description = (?), price = (?), stock = (?), id_category = (?) WHERE id = (?)");
+        ps.setString(1, product.getName());
+        ps.setString(1, product.getDescription());
+        ps.setDouble(1, product.getPrice());
+        ps.setInt(1, product.getStock());
+        ps.setInt(1, product.getCategory().getId());
+        ps.setInt(1, product.getId());
+        ps.executeUpdate();
 
+        ps.close();
+        Database.closeConnection(conn);
     }
 
-    //TODO: delete() pruduct
     @Override
     public boolean delete(Integer id) throws Exception {
+        Product product = this.get(id);
+        if (product == null)
+            return false;
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("DELETE FROM Products WHERE id = ?");
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Products WHERE id = (?)");
         ps.setInt(1, id);
         int rows = ps.executeUpdate();
 
         ps.close();
         Database.closeConnection(connection);
-        return rows > 0;
+        return (rows > 0);
     }
 
     @Override
