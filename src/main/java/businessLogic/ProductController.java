@@ -16,4 +16,13 @@ public class ProductController {
         productDAO.insert(product);
         return product.getId();
     }
+
+    public void IncreaseProductQuantity(int idProduct, int quantity) throws Exception {
+        Product product = productDAO.get(idProduct);
+        productDAO.IncreaseStock(product,quantity);
+    }
+    public boolean Decrease(int idProduct, int quantity) throws Exception {
+        Product product = productDAO.get(idProduct);
+        return productDAO.DecreaseStock(product,quantity);
+    }
 }
