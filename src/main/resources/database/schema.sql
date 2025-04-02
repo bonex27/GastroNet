@@ -1,11 +1,10 @@
 
 DROP TABLE IF EXISTS Customers;
+DROP TABLE   if exists  ProductOrder;
 DROP TABLE   if exists  Attendant;
 DROP TABLE   if exists  Products;
 DROP TABLE   if exists  Category;
 DROP TABLE   if exists  "Order";
-
-
 
 
 -- Creazione tabella Categoria
@@ -51,4 +50,13 @@ CREATE TABLE IF NOT EXISTS "Order" (
                                      cliente_id INTEGER NOT NULL,
                                      stato TEXT NOT NULL,
                                      FOREIGN KEY (cliente_id) REFERENCES Customers(fiscal_code)
+);
+
+CREATE TABLE IF NOT EXISTS ProductOrder (
+                                       id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                       order_id INTEGER NOT NULL,
+                                       product_id TEXT NOT NULL,
+                                        primary key (order_id,product_id),
+                                        FOREIGN KEY (order_id) references "Order"(id),
+                                       FOREIGN KEY (product_id) references Products(id)
 );

@@ -93,8 +93,15 @@ public class SQLiteProductDAO implements ProductDAO {
 
     //TODO: delete() pruduct
     @Override
-    public boolean delete(Integer integer) throws Exception {
-        return false;
+    public boolean delete(Integer id) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Products WHERE id = ?");
+        ps.setInt(1, id);
+        int rows = ps.executeUpdate();
+
+        ps.close();
+        Database.closeConnection(connection);
+        return rows > 0;
     }
 
     @Override

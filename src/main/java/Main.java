@@ -46,7 +46,13 @@ public class Main {
             System.out.println(product);
         }
 
+        productController.deleteProduct(idLasagna);
 
+        products = productDAO.getAll();
+        System.out.println("Available products: " + products.size()+" :");
+        for (Product product : products) {
+            System.out.println(product);
+        }
 
         //Test decrease and increase
         /*productController.IncreaseProductQuantity(idLasagna,10);
