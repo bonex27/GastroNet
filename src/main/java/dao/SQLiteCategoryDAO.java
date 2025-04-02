@@ -31,6 +31,7 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         return  category;
     }
 
+    //TODO: getAll() category
     @Override
     public List<Category> getAll() throws Exception {
         return List.of();
@@ -47,11 +48,13 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         Database.closeConnection(conn);
     }
 
+    //TODO: update() category
     @Override
     public void update(Category category) throws Exception {
 
     }
 
+    //TODO: delete() category
     @Override
     public boolean delete(Integer integer) throws Exception {
         return false;
