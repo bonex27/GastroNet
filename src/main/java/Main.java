@@ -1,6 +1,7 @@
 import businessLogic.*;
 import dao.*;
 import domainModel.Category;
+import domainModel.Order;
 import domainModel.Product;
 import domainModel.Search.DecoratorSearchPrice;
 import domainModel.Search.DecoratorSearchStock;
@@ -25,10 +26,10 @@ public class Main {
         CustomerController customerController = new CustomerController(customerDAO);
         CategoryController categoryController = new CategoryController(categoryDAO);
         ProductController productController = new ProductController(productDAO);
-        OrderController orderController = new OrderController(orderDAO, productDAO, customerDAO);
+        OrderController orderController = new OrderController(orderDAO,productDAO,customerDAO);
 
-        attendantController.addAttendant("Giovanni", "Rossi", "GVBSDB", "IT44123123");
-        String idCustomer1 = customerController.addCustomer("Pietro", "Bonechi", "BNCPTR", "CreditCard");
+          attendantController.addAttendant("Giovanni","Rossi","GVBSDB","IT44123123");
+        String idCustomer1 =  customerController.addCustomer("Pietro","Bonechi","BNCPTR","CreditCard");
 
         Category firstCourse = categoryController.CreateCategory("First course");
         Category secondCourse = categoryController.CreateCategory("Second course");
@@ -48,12 +49,12 @@ public class Main {
 
 
         List<Product> products = productDAO.getAll();
-        System.out.println("Available products: " + products.size() + " :");
+        System.out.println("Available products: " + products.size()+" :");
         for (Product product : products) {
             System.out.println(product);
         }
 
-        productController.deleteProduct(idLasagna);
+        //productController.deleteProduct(idLasagna);
 
         products = productDAO.getAll();
         System.out.println("Available products: " + products.size() + " :");
@@ -61,8 +62,33 @@ public class Main {
             System.out.println(product);
         }
 
+
+
         //Order creation
         int idOrder1 = orderController.createOrder(idCustomer1);
+        if(orderController.addProductToOrder(idOrder1,idOrder1))
+        {
+            System.out.println("Product added successfully");
+        }
+        else
+        {
+            System.out.println("Product not added");
+        }
+
+//        if(orderController.removeProductFromOrder(idOrder1,idOrder1))
+//        {
+//            System.out.println("Product removed successfully");
+//        }
+//        else
+//        {
+//            System.out.println("Product not removed");
+//        }
+        Order order = orderDAO.get(idOrder1);
+        System.out.println("\nOrder List:");
+        for (Product p : order.getProducts()) {
+            System.out.println("-" + p.toString());
+        }
+
 
         //Test decrease and increase
         /*productController.IncreaseProductQuantity(idLasagna,10);
@@ -85,6 +111,7 @@ public class Main {
                         5
                 )
         );
+
         System.out.println("\nResults:");
         for (Product p : productsFound) {
             System.out.println("-" + p.toString());

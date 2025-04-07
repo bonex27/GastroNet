@@ -92,7 +92,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     @Override
     public void insert(Order order) throws Exception {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO Orders(customer_id, state) VALUES (?,?)");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Orders(id_customer, state) VALUES (?,?)");
         ps.setString(1, order.getCustomerId());
         ps.setString(2, order.getState());
         ps.executeUpdate();
@@ -140,5 +140,30 @@ public class SQLiteOrderDAO implements OrderDAO {
         stmt.close();
         Database.closeConnection(connection);
         return id;
+    }
+
+    @Override
+    public void addProductToOrder(int ProductId, int OrderId) throws Exception {
+        Connection conn = Database.getConnection();
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO ProductOrder(product_id, order_id) VALUES (?,?)");
+        ps.setInt(1, ProductId);
+        ps.setInt(2, OrderId);
+        ps.executeUpdate();
+
+        ps.close();
+        Database.closeConnection(conn);
+    }
+
+    @Override
+    public boolean removeProductToOrder(int ProductId, int OrderId) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM ProductOrder WHERE order_id = ? and product_id = ?");
+        ps.setInt(1, OrderId);
+        ps.setInt(2, ProductId);
+        int rows = ps.executeUpdate();
+
+        ps.close();
+        Database.closeConnection(connection);
+        return rows > 0;
     }
 }

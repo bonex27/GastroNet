@@ -3,7 +3,9 @@ package businessLogic;
 import dao.CustomerDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
+import domainModel.Customer;
 import domainModel.Order;
+import domainModel.Product;
 
 public class OrderController {
 
@@ -23,4 +25,34 @@ public class OrderController {
         orderDAO.insert(order);
         return order.getId();
     }
+
+    public boolean addProductToOrder(int idProduct, int idOrder) throws Exception {
+        Product product = productDAO.get(idProduct);
+        //TODO metterci get order appena pronta!
+        Order order = orderDAO.get(idOrder);
+
+        if(product.getStock() > 0 && product != null && order != null){
+            orderDAO.addProductToOrder(idProduct, idOrder);
+            productDAO.DecreaseStock(product,1);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    public boolean removeProductFromOrder(int idProduct, int idOrder) throws Exception {
+        Product product = productDAO.get(idProduct);
+        Order order = new Order(idOrder,null);
+        if(product.getStock() > 0 && product != null && order != null){
+            if(orderDAO.removeProductToOrder(idProduct, idOrder))
+            {
+                productDAO.IncreaseStock(product,1);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

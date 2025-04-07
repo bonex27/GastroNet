@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS Attendant
 -- Creazione tabella domainModel.Order
 CREATE TABLE IF NOT EXISTS "Orders" (
                                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                        customer_id TEXT NOT NULL,
+                                        id_customer TEXT NOT NULL,
                                         state TEXT NOT NULL,
-                                        FOREIGN KEY (customer_id) REFERENCES Customers(fiscal_code)
+                                        FOREIGN KEY (id_customer) REFERENCES Customers(fiscal_code)
 );
 
 CREATE TABLE IF NOT EXISTS ProductOrder (

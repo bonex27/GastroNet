@@ -38,10 +38,7 @@ public class Order {
     public String getState() {
         return state.getState();
     }
-    public void AddProduct(Product product) {
-        this.products.add(product);
-    }
-    public void RemoveProduct(Product product) {
-
+    public List<Product> getProducts() {
+        return products;
     }
 }
