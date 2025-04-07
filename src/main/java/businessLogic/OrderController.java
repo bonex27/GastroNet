@@ -7,12 +7,15 @@ import domainModel.Customer;
 import domainModel.Order;
 import domainModel.Product;
 
+import java.util.List;
+
+import static java.util.Collections.unmodifiableList;
+
 public class OrderController {
 
     private final OrderDAO orderDAO;
     private final ProductDAO productDAO;
     private final CustomerDAO customerDAO;
-
 
     public OrderController(OrderDAO orderDAO, ProductDAO productDAO, CustomerDAO customerDAO) {
         this.orderDAO = orderDAO;
@@ -53,4 +56,7 @@ public class OrderController {
         return false;
     }
 
+    public List<Order> getOrders() throws Exception {
+        return unmodifiableList(orderDAO.getAll());
+    }
 }

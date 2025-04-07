@@ -26,10 +26,11 @@ public class Main {
         CustomerController customerController = new CustomerController(customerDAO);
         CategoryController categoryController = new CategoryController(categoryDAO);
         ProductController productController = new ProductController(productDAO);
-        OrderController orderController = new OrderController(orderDAO,productDAO,customerDAO);
+        OrderController orderController = new OrderController(orderDAO, productDAO, customerDAO);
 
-          attendantController.addAttendant("Giovanni","Rossi","GVBSDB","IT44123123");
-        String idCustomer1 =  customerController.addCustomer("Pietro","Bonechi","BNCPTR","CreditCard");
+        attendantController.addAttendant("Giovanni", "Rossi", "GVBSDB", "IT44123123");
+        String idCustomer1 = customerController.addCustomer("Pietro", "Bonechi", "BNCPTR", "CreditCard");
+        String idCustomer2 = customerController.addCustomer("Andrea", "Petrucci", "PTRNDR", "Cash");
 
         Category firstCourse = categoryController.CreateCategory("First course");
         Category secondCourse = categoryController.CreateCategory("Second course");
@@ -38,23 +39,23 @@ public class Main {
         Category fruit = categoryController.CreateCategory("Fruit");
 
 
-        int idLasagna = productController.AddProduct("Lasagna", "it is made of stacked layers of pasta alternating with fillings such as ragù", 6.50, firstCourse, 10);
-        productController.AddProduct("Penne al sugo", "it is made of stacked layers of pasta alternating with fillings such as ragù", 5.0, firstCourse, 10);
-        productController.AddProduct("Crostata", "it is made of stacked layers of pasta alternating with fillings such as ragù", 4.0, desserts, 5);
-        productController.AddProduct("Acqua naturale", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 100);
-        productController.AddProduct("Acqua frizzante", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 0);
-        productController.AddProduct("Mele", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 0);
-        productController.AddProduct("Pere", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 30);
-        productController.AddProduct("Banane", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 200);
+        int idProduct1 = productController.AddProduct("Lasagna", "it is made of stacked layers of pasta alternating with fillings such as ragù", 6.50, firstCourse, 10);
+        int idProduct2 = productController.AddProduct("Penne al sugo", "it is made of stacked layers of pasta alternating with fillings such as ragù", 5.0, firstCourse, 10);
+        int idProduct3 = productController.AddProduct("Crostata", "it is made of stacked layers of pasta alternating with fillings such as ragù", 4.0, desserts, 5);
+        int idProduct4 = productController.AddProduct("Acqua naturale", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 100);
+        int idProduct5 = productController.AddProduct("Acqua frizzante", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 0);
+        int idProduct6 = productController.AddProduct("Mele", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 0);
+        int idProduct7 = productController.AddProduct("Pere", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 30);
+        int idProduct8 = productController.AddProduct("Banane", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 200);
 
 
         List<Product> products = productDAO.getAll();
-        System.out.println("Available products: " + products.size()+" :");
+        System.out.println("Available products: " + products.size() + " :");
         for (Product product : products) {
             System.out.println(product);
         }
 
-        //productController.deleteProduct(idLasagna);
+        //productController.deleteProduct(idProduct1);
 
         products = productDAO.getAll();
         System.out.println("Available products: " + products.size() + " :");
@@ -63,17 +64,39 @@ public class Main {
         }
 
 
-
-        //Order creation
+        //Order1 creation
         int idOrder1 = orderController.createOrder(idCustomer1);
-        if(orderController.addProductToOrder(idOrder1,idOrder1))
-        {
+        if (orderController.addProductToOrder(idProduct1, idOrder1))
             System.out.println("Product added successfully");
-        }
         else
-        {
             System.out.println("Product not added");
-        }
+
+        if (orderController.addProductToOrder(idProduct2, idOrder1))
+            System.out.println("Product added successfully");
+        else
+            System.out.println("Product not added");
+
+        if (orderController.addProductToOrder(idProduct5, idOrder1))
+            System.out.println("Product added successfully");
+        else
+            System.out.println("Product not added");
+
+        //Order2 creation
+        int idOrder2 = orderController.createOrder(idCustomer2);
+        if (orderController.addProductToOrder(idProduct6, idOrder2))
+            System.out.println("Product added successfully");
+        else
+            System.out.println("Product not added");
+
+        if (orderController.addProductToOrder(idProduct3, idOrder2))
+            System.out.println("Product added successfully");
+        else
+            System.out.println("Product not added");
+
+        if (orderController.addProductToOrder(idProduct5, idOrder2))
+            System.out.println("Product added successfully");
+        else
+            System.out.println("Product not added");
 
 //        if(orderController.removeProductFromOrder(idOrder1,idOrder1))
 //        {
@@ -91,10 +114,10 @@ public class Main {
 
 
         //Test decrease and increase
-        /*productController.IncreaseProductQuantity(idLasagna,10);
-        boolean decreased = productController.DecreaseProductQuantity(idLasagna,25);
+        /*productController.IncreaseProductQuantity(idProduct1,10);
+        boolean decreased = productController.DecreaseProductQuantity(idProduct1,25);
         System.out.println("Product decreased: " + decreased);
-        decreased = productController.DecreaseProductQuantity(idLasagna,15);
+        decreased = productController.DecreaseProductQuantity(idProduct1,15);
         System.out.println("Product decreased: " + decreased);*/
 
         // Search with Decorator
@@ -126,6 +149,14 @@ public class Main {
         System.out.println("\nResults:");
         for (Product p : productsFound2) {
             System.out.println("-" + p.toString());
+        }
+
+
+        // Test get orders from db
+        System.out.println("\nAll Orders from DB:\n");
+        List<Order> allOrders = orderController.getOrders();
+        for (Order o : allOrders) {
+            System.out.println(o.toString());
         }
     }
 }

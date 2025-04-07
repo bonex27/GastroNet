@@ -43,4 +43,15 @@ public class Order {
     public List<Product> getProducts() {
         return products;
     }
+
+    @Override
+    public String toString() {
+        String strOut = "#" + id
+                + " by " + customer.firstName + " " + customer.lastName
+                + " (" + state.getState() + "):";
+        for (Product p : products) {
+            strOut = strOut + "\n\t-" + p.getName();
+        }
+        return strOut;
+    }
 }
