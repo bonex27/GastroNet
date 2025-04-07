@@ -4,7 +4,7 @@ public class SearchConcrete implements Search {
 
     private final String query;
 
-    public SearchConcrete(boolean stock) {
+    public SearchConcrete() {
         this.query = "SELECT p.* FROM products p WHERE";
     }
 

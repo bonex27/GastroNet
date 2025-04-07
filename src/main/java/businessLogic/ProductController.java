@@ -23,7 +23,6 @@ public class ProductController {
         return productDAO.delete(id);
     }
 
-
     public int AddProduct(String name, String description, double price, Category category, int stock) throws Exception {
         Product product = new Product(productDAO.GetNextId(),name, description, price, stock,category);
         productDAO.insert(product);
@@ -44,7 +43,7 @@ public class ProductController {
     }
 
     public List<Product> Search(Search search) throws Exception {
-        //TODO da implementare ricerca, il param search sarà un extends di decorator. Per effettuare una ricarca filtrata. (Price, availab)
-        return null;
+        System.out.println(search.getSearchQuery());
+        return productDAO.search(search.getSearchQuery());
     }
 }

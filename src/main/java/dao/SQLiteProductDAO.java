@@ -152,4 +152,22 @@ public class SQLiteProductDAO implements ProductDAO {
         Database.closeConnection(connection);
         return updated > 0;
     }
+
+    @Override
+    public List<Product> search(String query) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+
+        List<Product> products = new ArrayList<>();
+
+        while (rs.next()){
+            products.add(this.get(rs.getInt("id")));
+        }
+
+        rs.close();
+        ps.close();
+        Database.closeConnection(connection);
+        return products;
+    }
 }

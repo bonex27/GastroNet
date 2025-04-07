@@ -51,6 +51,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return name + " "+ price + ", " + stock + "remaining";
+        return name + " "+ price + "€ [" + stock + " available] (" + category.getDescription() + ")";
     }
 }
