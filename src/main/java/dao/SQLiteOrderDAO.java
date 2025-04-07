@@ -30,6 +30,8 @@ public class SQLiteOrderDAO implements OrderDAO {
         ResultSet rs = ps.executeQuery();
         Order order = null;
 
+        String stateString = rs.getString("state");
+
         OrderState state;
         if (Objects.equals(rs.getString("state"), "Pending"))
             state = new PendingState();
@@ -186,5 +188,16 @@ public class SQLiteOrderDAO implements OrderDAO {
         ps.close();
         Database.closeConnection(connection);
         return rows > 0;
+    }
+
+    @Override
+    public void changeState(Integer id, OrderState newState) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("UPDATE orders SET state = (?) WHERE id = (?)");
+        ps.setString(1, newState.getState());
+        ps.setInt(2, id);
+        ps.executeUpdate();
+        ps.close();
+        Database.closeConnection(connection);
     }
 }

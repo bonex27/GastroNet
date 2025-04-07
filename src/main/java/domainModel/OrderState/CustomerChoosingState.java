@@ -8,6 +8,6 @@ public class CustomerChoosingState extends OrderState {
 
     @Override
     public String getState() {
-        return "Customer Choosing";
+        return "CustomerChoosing";
     }
 }

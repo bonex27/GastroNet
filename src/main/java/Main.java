@@ -27,6 +27,7 @@ public class Main {
         CategoryController categoryController = new CategoryController(categoryDAO);
         ProductController productController = new ProductController(productDAO);
         OrderController orderController = new OrderController(orderDAO, productDAO, customerDAO);
+        StateController stateController = new StateController(orderController, orderDAO);
 
         attendantController.addAttendant("Giovanni", "Rossi", "GVBSDB", "IT44123123");
         String idCustomer1 = customerController.addCustomer("Pietro", "Bonechi", "BNCPTR", "CreditCard");
@@ -48,7 +49,7 @@ public class Main {
         int idProduct7 = productController.AddProduct("Pere", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 30);
         int idProduct8 = productController.AddProduct("Banane", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 200);
 
-
+        /*
         List<Product> products = productDAO.getAll();
         System.out.println("Available products: " + products.size() + " :");
         for (Product product : products) {
@@ -62,41 +63,18 @@ public class Main {
         for (Product product : products) {
             System.out.println(product);
         }
-
+        */
 
         //Order1 creation
         int idOrder1 = orderController.createOrder(idCustomer1);
-        if (orderController.addProductToOrder(idProduct1, idOrder1))
-            System.out.println("Product added successfully");
-        else
-            System.out.println("Product not added");
-
-        if (orderController.addProductToOrder(idProduct2, idOrder1))
-            System.out.println("Product added successfully");
-        else
-            System.out.println("Product not added");
-
-        if (orderController.addProductToOrder(idProduct5, idOrder1))
-            System.out.println("Product added successfully");
-        else
-            System.out.println("Product not added");
+        stateController.addProductToOrder(idProduct1, idOrder1);
+        stateController.addProductToOrder(idProduct2, idOrder1);
 
         //Order2 creation
         int idOrder2 = orderController.createOrder(idCustomer2);
-        if (orderController.addProductToOrder(idProduct6, idOrder2))
-            System.out.println("Product added successfully");
-        else
-            System.out.println("Product not added");
-
-        if (orderController.addProductToOrder(idProduct3, idOrder2))
-            System.out.println("Product added successfully");
-        else
-            System.out.println("Product not added");
-
-        if (orderController.addProductToOrder(idProduct5, idOrder2))
-            System.out.println("Product added successfully");
-        else
-            System.out.println("Product not added");
+        stateController.addProductToOrder(idProduct6, idOrder2);
+        stateController.addProductToOrder(idProduct3, idOrder2);
+        stateController.addProductToOrder(idProduct4, idOrder2);
 
 //        if(orderController.removeProductFromOrder(idOrder1,idOrder1))
 //        {
@@ -106,12 +84,6 @@ public class Main {
 //        {
 //            System.out.println("Product not removed");
 //        }
-        Order order = orderDAO.get(idOrder1);
-        System.out.println("\nOrder List:");
-        for (Product p : order.getProducts()) {
-            System.out.println("-" + p.toString());
-        }
-
 
         //Test decrease and increase
         /*productController.IncreaseProductQuantity(idProduct1,10);
@@ -120,6 +92,7 @@ public class Main {
         decreased = productController.DecreaseProductQuantity(idProduct1,15);
         System.out.println("Product decreased: " + decreased);*/
 
+        /*
         // Search with Decorator
         System.out.println("\nDECORATOR:");
         System.out.println("\nSearching for products in stock with a price range of [2.00 , 5.00] €.\nQuery generated:");
@@ -150,11 +123,26 @@ public class Main {
         for (Product p : productsFound2) {
             System.out.println("-" + p.toString());
         }
-
+        */
 
         // Test get orders from db
-        System.out.println("\nAll Orders from DB:\n");
+        System.out.println("\nAll Orders:");
         List<Order> allOrders = orderController.getOrders();
+        for (Order o : allOrders) {
+            System.out.println(o.toString());
+        }
+
+        stateController.addProductToOrder(idProduct5, idOrder1);
+        stateController.addProductToOrder(idProduct8, idOrder1);
+        stateController.addProductToOrder(idProduct5, idOrder2);
+        stateController.addProductToOrder(idProduct7, idOrder2);
+
+
+        stateController.confirmOrder(idOrder1);
+        stateController.confirmOrder(idOrder2);
+
+        System.out.println("\nAll Orders:");
+        allOrders = orderController.getOrders();
         for (Order o : allOrders) {
             System.out.println(o.toString());
         }

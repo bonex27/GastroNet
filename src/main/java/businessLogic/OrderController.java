@@ -56,6 +56,10 @@ public class OrderController {
         return false;
     }
 
+    public Order getOrder(int id) throws Exception {
+        return orderDAO.get(id);
+    }
+
     public List<Order> getOrders() throws Exception {
         return unmodifiableList(orderDAO.getAll());
     }
