@@ -1,5 +1,7 @@
 package domainModel;
 
+import java.util.Objects;
+
 public class Customer extends Person {
     private String paymentMethod;
 
@@ -10,5 +12,18 @@ public class Customer extends Person {
 
     public String getPaymentMethod() {
         return paymentMethod;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(paymentMethod, customer.paymentMethod);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(paymentMethod);
     }
 }

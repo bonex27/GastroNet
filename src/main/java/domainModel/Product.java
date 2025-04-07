@@ -1,5 +1,7 @@
 package domainModel;
 
+import java.util.Objects;
+
 public class Product {
 
     private int id;
@@ -52,5 +54,18 @@ public class Product {
     @Override
     public String toString() {
         return name + " "+ price + "€ [" + stock + " available] (" + category.getDescription() + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id && Double.compare(price, product.price) == 0 && stock == product.stock && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(category, product.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, category, price, stock);
     }
 }

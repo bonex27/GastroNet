@@ -27,7 +27,6 @@ public class Main {
         CategoryController categoryController = new CategoryController(categoryDAO);
         ProductController productController = new ProductController(productDAO);
         OrderController orderController = new OrderController(orderDAO, productDAO, customerDAO);
-        StateController stateController = new StateController(orderController, orderDAO);
 
         attendantController.addAttendant("Giovanni", "Rossi", "GVBSDB", "IT44123123");
         String idCustomer1 = customerController.addCustomer("Pietro", "Bonechi", "BNCPTR", "CreditCard");
@@ -44,7 +43,7 @@ public class Main {
         int idProduct2 = productController.AddProduct("Penne al sugo", "it is made of stacked layers of pasta alternating with fillings such as ragù", 5.0, firstCourse, 10);
         int idProduct3 = productController.AddProduct("Crostata", "it is made of stacked layers of pasta alternating with fillings such as ragù", 4.0, desserts, 5);
         int idProduct4 = productController.AddProduct("Acqua naturale", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 100);
-        int idProduct5 = productController.AddProduct("Acqua frizzante", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 0);
+        int idProduct5 = productController.AddProduct("Acqua frizzante", "it is made of stacked layers of pasta alternating with fillings such as ragù", 2.0, drink, 10);
         int idProduct6 = productController.AddProduct("Mele", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 0);
         int idProduct7 = productController.AddProduct("Pere", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 30);
         int idProduct8 = productController.AddProduct("Banane", "it is made of stacked layers of pasta alternating with fillings such as ragù", 3.0, fruit, 200);
@@ -67,14 +66,15 @@ public class Main {
 
         //Order1 creation
         int idOrder1 = orderController.createOrder(idCustomer1);
-        stateController.addProductToOrder(idProduct1, idOrder1);
-        stateController.addProductToOrder(idProduct2, idOrder1);
+        orderController.addProductToOrder(idProduct1, idOrder1);
+        orderController.addProductToOrder(idProduct3, idOrder1);
+        orderController.addProductToOrder(idProduct5, idOrder1);
 
         //Order2 creation
         int idOrder2 = orderController.createOrder(idCustomer2);
-        stateController.addProductToOrder(idProduct6, idOrder2);
-        stateController.addProductToOrder(idProduct3, idOrder2);
-        stateController.addProductToOrder(idProduct4, idOrder2);
+        orderController.addProductToOrder(idProduct2, idOrder2);
+        orderController.addProductToOrder(idProduct3, idOrder2);
+        orderController.addProductToOrder(idProduct4, idOrder2);
 
 //        if(orderController.removeProductFromOrder(idOrder1,idOrder1))
 //        {
@@ -132,14 +132,22 @@ public class Main {
             System.out.println(o.toString());
         }
 
-        stateController.addProductToOrder(idProduct5, idOrder1);
-        stateController.addProductToOrder(idProduct8, idOrder1);
-        stateController.addProductToOrder(idProduct5, idOrder2);
-        stateController.addProductToOrder(idProduct7, idOrder2);
+        try {
+            orderController.addProductToOrder(idProduct6, idOrder1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        orderController.confirmOrder(idOrder1);
+        System.out.println("\nOrder confirmed:");
 
-        stateController.confirmOrder(idOrder1);
-        stateController.confirmOrder(idOrder2);
+        try {
+            orderController.removeProductFromOrder(idProduct6, idOrder1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        orderController.confirmOrder(idOrder2);
 
         System.out.println("\nAll Orders:");
         allOrders = orderController.getOrders();
