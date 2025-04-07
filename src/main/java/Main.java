@@ -19,7 +19,7 @@ public class Main {
         AttendantDAO attendantDAO = new SQLiteAttendantDAO();
         CategoryDAO categoryDAO = new SQLiteCategoryDAO();
         ProductDAO productDAO = new SQLiteProductDAO(categoryDAO);
-        OrderDAO orderDAO = new SQLiteOrderDAO(customerDAO);
+        OrderDAO orderDAO = new SQLiteOrderDAO(customerDAO, productDAO);
 
         //Controller instance
         AttendantController attendantController = new AttendantController(attendantDAO);
@@ -96,7 +96,6 @@ public class Main {
         System.out.println("Product decreased: " + decreased);
         decreased = productController.DecreaseProductQuantity(idLasagna,15);
         System.out.println("Product decreased: " + decreased);*/
-
 
         // Search with Decorator
         System.out.println("\nDECORATOR:");

@@ -1,6 +1,5 @@
 package dao;
 
-import domainModel.Category;
 import domainModel.Order;
 import domainModel.OrderState.*;
 import domainModel.Product;
@@ -16,9 +15,11 @@ import java.util.Objects;
 public class SQLiteOrderDAO implements OrderDAO {
 
     private final CustomerDAO customerDAO;
+    private final ProductDAO productDAO;
 
-    public SQLiteOrderDAO(CustomerDAO customerDAO) {
+    public SQLiteOrderDAO(CustomerDAO customerDAO, ProductDAO productDAO) {
         this.customerDAO = customerDAO;
+        this.productDAO = productDAO;
     }
 
     @Override
@@ -46,7 +47,8 @@ public class SQLiteOrderDAO implements OrderDAO {
             order = new Order(
                     rs.getInt("id"),
                     customerDAO.get(rs.getString("id_customer")),
-                    state
+                    state,
+                    this.getProducts(rs.getInt("id"))
             );
         }
         rs.close();
@@ -79,7 +81,8 @@ public class SQLiteOrderDAO implements OrderDAO {
             orders.add(new Order(
                     rs.getInt("id"),
                     customerDAO.get(rs.getString("id_customer")),
-                    state
+                    state,
+                    this.getProducts(rs.getInt("id"))
             ));
         }
         rs.close();
@@ -119,7 +122,7 @@ public class SQLiteOrderDAO implements OrderDAO {
         Order order = this.get(id);
         if (order == null)
             return false;
-        Connection connection= Database.getConnection();
+        Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("DELETE FROM Orders WHERE id = (?)");
         ps.setInt(1, id);
         int rows = ps.executeUpdate();
@@ -140,6 +143,24 @@ public class SQLiteOrderDAO implements OrderDAO {
         stmt.close();
         Database.closeConnection(connection);
         return id;
+    }
+
+    @Override
+    public List<Product> getProducts(int OrderId) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from ProductOrder where order_id = (?)");
+        ps.setInt(1, OrderId);
+        ResultSet rs = ps.executeQuery();
+        List<Product> products = new ArrayList<>();
+
+        while (rs.next()) {
+            products.add(productDAO.get(rs.getInt("product_id")));
+        }
+        rs.close();
+        ps.close();
+        Database.closeConnection(connection);
+
+        return products;
     }
 
     @Override

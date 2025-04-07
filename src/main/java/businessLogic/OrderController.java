@@ -21,7 +21,7 @@ public class OrderController {
     }
 
     public int createOrder(String cf_customer) throws Exception {
-        Order order = new Order(orderDAO.GetNextId(),customerDAO.get(cf_customer));
+        Order order = new Order(orderDAO.GetNextId(), customerDAO.get(cf_customer));
         orderDAO.insert(order);
         return order.getId();
     }
@@ -31,24 +31,22 @@ public class OrderController {
         //TODO metterci get order appena pronta!
         Order order = orderDAO.get(idOrder);
 
-        if(product.getStock() > 0 && product != null && order != null){
+        if (product.getStock() > 0 && product != null && order != null) {
             orderDAO.addProductToOrder(idProduct, idOrder);
-            productDAO.DecreaseStock(product,1);
+            productDAO.DecreaseStock(product, 1);
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
 
     }
+
     public boolean removeProductFromOrder(int idProduct, int idOrder) throws Exception {
         Product product = productDAO.get(idProduct);
-        Order order = new Order(idOrder,null);
-        if(product.getStock() > 0 && product != null && order != null){
-            if(orderDAO.removeProductToOrder(idProduct, idOrder))
-            {
-                productDAO.IncreaseStock(product,1);
+        Order order = new Order(idOrder, null);
+        if (product.getStock() > 0 && product != null && order != null) {
+            if (orderDAO.removeProductToOrder(idProduct, idOrder)) {
+                productDAO.IncreaseStock(product, 1);
                 return true;
             }
         }

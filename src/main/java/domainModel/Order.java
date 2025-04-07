@@ -21,10 +21,10 @@ public class Order {
         this.state = new CustomerChoosingState();
     }
 
-    public Order(int id, Customer customer, OrderState state) {
+    public Order(int id, Customer customer, OrderState state, List<Product> products) {
         this.id = id;
         this.customer = customer;
-        this.products = new ArrayList<Product>();
+        this.products = products;
         this.state = state;
     }
 
@@ -33,11 +33,13 @@ public class Order {
     }
 
     public String getCustomerId() {
-       return customer.getCf();
+        return customer.getCf();
     }
+
     public String getState() {
         return state.getState();
     }
+
     public List<Product> getProducts() {
         return products;
     }
