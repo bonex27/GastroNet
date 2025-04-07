@@ -22,6 +22,5 @@ public class OrderController {
         Order order = new Order(orderDAO.GetNextId(),customerDAO.get(cf_customer));
         orderDAO.insert(order);
         return order.getId();
-
     }
 }

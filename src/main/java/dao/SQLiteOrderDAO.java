@@ -1,5 +1,6 @@
 package dao;
 
+import domainModel.Category;
 import domainModel.Order;
 import domainModel.OrderState.*;
 import domainModel.Product;
@@ -100,16 +101,32 @@ public class SQLiteOrderDAO implements OrderDAO {
         Database.closeConnection(connection);
     }
 
-    //TODO: update SQLiteOrderDAO
     @Override
     public void update(Order order) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("UPDATE Orders SET state = (?) WHERE id = (?)");
+        ps.setString(1, order.getState());
+        ps.setInt(2, order.getId());
+        ps.executeUpdate();
 
+        ps.close();
+        Database.closeConnection(connection);
     }
 
-    //TODO: delete SQLiteOrderDAO
+    //TODO: delete on cascade SQLiteOrderDAO
     @Override
-    public boolean delete(Integer integer) throws Exception {
-        return false;
+    public boolean delete(Integer id) throws Exception {
+        Order order = this.get(id);
+        if (order == null)
+            return false;
+        Connection connection= Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Orders WHERE id = (?)");
+        ps.setInt(1, id);
+        int rows = ps.executeUpdate();
+
+        ps.close();
+        Database.closeConnection(connection);
+        return (rows > 0);
     }
 
     @Override

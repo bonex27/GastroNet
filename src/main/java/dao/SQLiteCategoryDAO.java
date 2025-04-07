@@ -13,8 +13,8 @@ public class SQLiteCategoryDAO implements CategoryDAO {
 
     @Override
     public Category get(Integer id) throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("select * from category where id = ?");
+        Connection connection= Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from category where id = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         Category category = null;
@@ -27,15 +27,15 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         }
         rs.close();
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
 
         return category;
     }
 
     @Override
     public List<Category> getAll() throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("select * from category");
+        Connection connection= Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from category");
         ResultSet rs = ps.executeQuery();
         List<Category> categories = new ArrayList<>();
 
@@ -47,31 +47,32 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         }
         rs.close();
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
 
         return categories;
     }
 
     @Override
     public void insert(Category category) throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO Category(description) VALUES (?)");
+        Connection connection= Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Category(description) VALUES (?)");
         ps.setString(1, category.getDescription());
         ps.executeUpdate();
 
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
     }
 
     @Override
     public void update(Category category) throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE Category SET description = (?) WHERE id = (?)");
-        ps.setInt(1, category.getId());
+        Connection connection= Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("UPDATE Category SET description = (?) WHERE id = (?)");
+        ps.setString(1, category.getDescription());
+        ps.setInt(2, category.getId());
         ps.executeUpdate();
 
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
     }
 
     @Override
@@ -79,13 +80,13 @@ public class SQLiteCategoryDAO implements CategoryDAO {
         Category category = this.get(id);
         if (category == null)
             return false;
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE FROM Category WHERE id = (?)");
+        Connection connection= Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Category WHERE id = (?)");
         ps.setInt(1, id);
         int rows = ps.executeUpdate();
 
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
         return (rows > 0);
     }
 
