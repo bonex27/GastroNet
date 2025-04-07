@@ -18,7 +18,7 @@ public class Main {
         AttendantDAO attendantDAO = new SQLiteAttendantDAO();
         CategoryDAO categoryDAO = new SQLiteCategoryDAO();
         ProductDAO productDAO = new SQLiteProductDAO(categoryDAO);
-        OrderDAO orderDAO = new SQLiteOrderDAO();
+        OrderDAO orderDAO = new SQLiteOrderDAO(customerDAO);
 
         //Controller instance
         AttendantController attendantController = new AttendantController(attendantDAO);

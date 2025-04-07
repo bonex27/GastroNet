@@ -2,7 +2,6 @@ package dao;
 
 import domainModel.Category;
 import domainModel.Customer;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteCategoryDAO implements CategoryDAO {
+
     @Override
     public Category get(Integer id) throws Exception {
         Connection conn = Database.getConnection();

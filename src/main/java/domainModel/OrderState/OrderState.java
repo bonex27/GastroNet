@@ -13,3 +13,11 @@ public abstract class OrderState {
 
     }
 }
+/**
+ * Ordine stati:
+ * 1)CustomerChoosing
+ * 2)Pending
+ * 3)Preparation
+ * 4)Ready
+ * 5)Delivered
+ */

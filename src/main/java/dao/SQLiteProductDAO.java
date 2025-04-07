@@ -2,7 +2,6 @@ package dao;
 
 import domainModel.Category;
 import domainModel.Product;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class SQLiteProductDAO implements ProductDAO {
 
     @Override
     public Product get(Integer id) throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("select * from products where id = ?");
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from products where id = ?");
         ps.setString(1, id.toString());
         ResultSet rs = ps.executeQuery();
         Product product = null;
@@ -38,15 +37,15 @@ public class SQLiteProductDAO implements ProductDAO {
         }
         rs.close();
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
 
         return product;
     }
 
     @Override
     public List<Product> getAll() throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("select * from products");
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from products");
         ResultSet rs = ps.executeQuery();
         List<Product> products = new ArrayList<>();
 
@@ -62,15 +61,15 @@ public class SQLiteProductDAO implements ProductDAO {
         }
         rs.close();
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
 
         return products;
     }
 
     @Override
     public void insert(Product product) throws Exception {
-        Connection con = Database.getConnection();
-        PreparedStatement ps = con.prepareStatement("INSERT INTO Products (name, description, price, id_category, stock) VALUES (?, ?, ?, ?, ?)");
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Products (name, description, price, id_category, stock) VALUES (?, ?, ?, ?, ?)");
         // id is not needed because is autoincrement
         ps.setString(1, product.getName());
         ps.setString(2, product.getDescription());
@@ -80,13 +79,13 @@ public class SQLiteProductDAO implements ProductDAO {
         ps.executeUpdate();
 
         ps.close();
-        Database.closeConnection(con);
+        Database.closeConnection(connection);
     }
 
     @Override
     public void update(Product product) throws Exception {
-        Connection conn = Database.getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE Products SET name = (?), description = (?), price = (?), stock = (?), id_category = (?) WHERE id = (?)");
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("UPDATE Products SET name = (?), description = (?), price = (?), stock = (?), id_category = (?) WHERE id = (?)");
         ps.setString(1, product.getName());
         ps.setString(1, product.getDescription());
         ps.setDouble(1, product.getPrice());
@@ -96,7 +95,7 @@ public class SQLiteProductDAO implements ProductDAO {
         ps.executeUpdate();
 
         ps.close();
-        Database.closeConnection(conn);
+        Database.closeConnection(connection);
     }
 
     @Override

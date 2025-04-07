@@ -21,6 +21,13 @@ public class Order {
         this.state = new CustomerChoosingState();
     }
 
+    public Order(int id, Customer customer, OrderState state) {
+        this.id = id;
+        this.customer = customer;
+        this.products = new ArrayList<Product>();
+        this.state = state;
+    }
+
     public int getId() {
         return id;
     }
