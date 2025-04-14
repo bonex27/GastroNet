@@ -7,9 +7,4 @@ public abstract class OrderState {
     {
         return state;
     }
-
-    public void nextState()
-    {
-
-    }
 }
