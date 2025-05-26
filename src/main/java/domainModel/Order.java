@@ -26,10 +26,12 @@ public class Order {
         this.products = products;
         this.state = state;
     }
+
     public Order(Order order) {
         this.id = order.getId();
         this.customer = new Customer(order.customer);
         this.products = new ArrayList<Product>();
+
         for (Product i : order.products) {
             this.products.add(new Product(i)); // deep copy di ogni elemento
         }
@@ -48,8 +50,8 @@ public class Order {
         else if(order.state instanceof ReadyState) {
             state = new ReadyState();
         }
-
     }
+
     public int getId() {
         return id;
     }

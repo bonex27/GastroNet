@@ -11,6 +11,12 @@ public abstract class Person {
         this.cf = cf;
     }
 
+    public Person(Person person) {
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.cf = person.getCf();
+    }
+
     public String getFirstName() {
         return firstName;
     }
