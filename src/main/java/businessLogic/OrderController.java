@@ -36,6 +36,10 @@ public class OrderController {
         return unmodifiableList(orderDAO.getAll());
     }
 
+    public List<Order> getOrders(String idCustomer) throws Exception {
+        return unmodifiableList(orderDAO.getByUser(idCustomer));
+    }
+
     public int createOrder(String cf_customer) throws Exception {
         Order order = new Order(orderDAO.GetNextId(), customerDAO.get(cf_customer));
         orderDAO.insert(order);

@@ -9,6 +9,8 @@ import java.util.List;
 public interface OrderDAO extends DAO<Order, Integer> {
     public int GetNextId() throws Exception;
 
+    public List<Order> getByUser(String CustomerId) throws Exception;
+
     public List<Product> getProducts(int OrderId) throws Exception;
 
     public void addProductToOrder(int ProductId, int OrderId) throws Exception;
