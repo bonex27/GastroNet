@@ -9,6 +9,10 @@ public class Customer extends Person {
         super(firstName, lastName, cf);
         this.paymentMethod = paymentMethod;
     }
+    public Customer(Customer c) {
+        super(c.firstName, c.lastName, c.cf);
+        this.paymentMethod = c.paymentMethod;
+    }
 
     public String getPaymentMethod() {
         return paymentMethod;

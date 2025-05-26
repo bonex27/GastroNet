@@ -19,7 +19,15 @@ public class Product {
         this.stock = stock;
         this.category = category;
     }
+    public  Product(Product p) {
+        this.id = p.id;
+        this.name = p.name;
+        this.description = p.description;
+        this.category = p.category;
+        this.price = p.price;
+        this.stock = p.stock;
 
+    }
     //Getter
 
     public int getId() {

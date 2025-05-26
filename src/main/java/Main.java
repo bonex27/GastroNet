@@ -10,6 +10,8 @@ import domainModel.Search.SearchConcrete;
 import java.util.List;
 
 public class Main {
+
+    public static final String RED_MESSAGE = "\033[0;31m";     // Red ansi for manage errore printout
     public static void main(String[] args) throws Exception {
         Database.setDatabase("main.db");
         Database.initDatabase();
@@ -86,13 +88,13 @@ public class Main {
 //        }
 
         //Test decrease and increase
-        /*productController.IncreaseProductQuantity(idProduct1,10);
+        productController.IncreaseProductQuantity(idProduct1,10);
         boolean decreased = productController.DecreaseProductQuantity(idProduct1,25);
         System.out.println("Product decreased: " + decreased);
         decreased = productController.DecreaseProductQuantity(idProduct1,15);
-        System.out.println("Product decreased: " + decreased);*/
+        System.out.println("Product decreased: " + decreased);
 
-        /*
+
         // Search with Decorator
         System.out.println("\nDECORATOR:");
         System.out.println("\nSearching for products in stock with a price range of [2.00 , 5.00] €.\nQuery generated:");
@@ -123,7 +125,7 @@ public class Main {
         for (Product p : productsFound2) {
             System.out.println("-" + p.toString());
         }
-        */
+
 
         // Test get orders from db
         System.out.println("\nAll Orders:");
@@ -135,7 +137,7 @@ public class Main {
         try {
             orderController.addProductToOrder(idProduct6, idOrder1);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(RED_MESSAGE + "Error: " + e.getMessage());
         }
 
         orderController.confirmOrder(idOrder1);
@@ -144,7 +146,8 @@ public class Main {
         try {
             orderController.removeProductFromOrder(idProduct6, idOrder1);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            System.out.println(e.getMessage());
         }
 
         orderController.confirmOrder(idOrder2);

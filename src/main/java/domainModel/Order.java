@@ -1,8 +1,6 @@
 package domainModel;
 
-import domainModel.OrderState.CustomerChoosingState;
-import domainModel.OrderState.OrderState;
-import domainModel.OrderState.PendingState;
+import domainModel.OrderState.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,30 @@ public class Order {
         this.products = products;
         this.state = state;
     }
+    public Order(Order order) {
+        this.id = order.getId();
+        this.customer = new Customer(order.customer);
+        this.products = new ArrayList<Product>();
+        for (Product i : order.products) {
+            this.products.add(new Product(i)); // deep copy di ogni elemento
+        }
+        if (order.state instanceof CustomerChoosingState) {
+            state = new CustomerChoosingState();
+        }
+        else if (order.state instanceof PendingState) {
+            state = new PendingState();
+        }
+        else if (order.state instanceof PreparationState) {
+            state = new PreparationState();
+        }
+        else if(order.state instanceof DeliveredState) {
+            state = new DeliveredState();
+        }
+        else if(order.state instanceof ReadyState) {
+            state = new ReadyState();
+        }
 
+    }
     public int getId() {
         return id;
     }

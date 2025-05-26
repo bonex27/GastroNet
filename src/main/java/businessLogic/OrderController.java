@@ -61,14 +61,14 @@ public class OrderController {
 
     public void removeProductFromOrder(int idProduct, int idOrder) throws Exception {
         Product product = productDAO.get(idProduct);
-        Order order = orderDAO.get(idOrder);
+        Order order = new Order( orderDAO.get(idOrder));
 
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
         if (product == null)
             throw new IllegalArgumentException("The given product id does not exist.");
         if (!Objects.equals(order.getState(), "CustomerChoosing"))
-            throw new RuntimeException("You can confirm an order only if is in the 'CustomerChoosing' state.");
+            throw new RuntimeException("You can remove an order only if is in the 'CustomerChoosing' state.");
         if (!order.getProducts().contains(product))
             throw new IllegalArgumentException("The product is not present in the order.");
 
