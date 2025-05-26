@@ -95,6 +95,41 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
+    public List<Order> getByUser(String id) throws Exception {
+        Connection connection = Database.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from orders where id_customer = ?");
+        ps.setString(1, id);
+        ResultSet rs = ps.executeQuery();
+        List<Order> orders = new ArrayList<>();
+        OrderState state;
+
+        while (rs.next()) {
+            if (Objects.equals(rs.getString("state"), "Pending"))
+                state = new PendingState();
+            else if (Objects.equals(rs.getString("state"), "Preparation"))
+                state = new PreparationState();
+            else if (Objects.equals(rs.getString("state"), "Ready"))
+                state = new ReadyState();
+            else if (Objects.equals(rs.getString("state"), "Delivered"))
+                state = new DeliveredState();
+            else
+                state = new CustomerChoosingState();
+
+            orders.add(new Order(
+                    rs.getInt("id"),
+                    customerDAO.get(rs.getString("id_customer")),
+                    state,
+                    this.getProducts(rs.getInt("id"))
+            ));
+        }
+        rs.close();
+        ps.close();
+        Database.closeConnection(connection);
+
+        return orders;
+    }
+
+    @Override
     public void insert(Order order) throws Exception {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("INSERT INTO Orders(id_customer, state) VALUES (?,?)");

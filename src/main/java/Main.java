@@ -141,6 +141,7 @@ public class Main {
         orderController.confirmOrder(idOrder1);
         System.out.println("\nOrder confirmed:");
 
+        // rimozione prodotto da ordine
         try {
             orderController.removeProductFromOrder(idProduct6, idOrder1);
         } catch (Exception e) {
@@ -151,6 +152,13 @@ public class Main {
 
         System.out.println("\nAll Orders:");
         allOrders = orderController.getOrders();
+        for (Order o : allOrders) {
+            System.out.println(o.toString());
+        }
+
+
+        System.out.println("\nOrder User 1:");
+        allOrders = orderController.getOrders(idCustomer1);
         for (Order o : allOrders) {
             System.out.println(o.toString());
         }
