@@ -6,6 +6,7 @@ import domainModel.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class SQLiteAttendantDAO implements AttendantDAO {
 
     @Override
-    public Attendant get(String fc) throws Exception {
+    public Attendant get(String fc) throws SQLException {
         Connection conn = Database.getConnection();
         Attendant attendant = null;
         PreparedStatement ps = conn.prepareStatement("select * from attendant where fiscal_code = ?");
@@ -36,7 +37,7 @@ public class SQLiteAttendantDAO implements AttendantDAO {
     }
 
     @Override
-    public List<Attendant> getAll() throws Exception {
+    public List<Attendant> getAll() throws SQLException {
         Connection conn = Database.getConnection();
         List<Attendant> attendants = new ArrayList<>();
         PreparedStatement ps = conn.prepareStatement("select * from attendant");
@@ -58,7 +59,7 @@ public class SQLiteAttendantDAO implements AttendantDAO {
     }
 
     @Override
-    public void insert(Attendant attendant) throws Exception {
+    public void insert(Attendant attendant) throws SQLException {
         Connection conn = Database.getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO attendant(fiscal_code, name, surname, iban) VALUES (?, ?, ?,?)");
         ps.setString(1, attendant.getCf());
@@ -72,7 +73,7 @@ public class SQLiteAttendantDAO implements AttendantDAO {
     }
 
     @Override
-    public void update(Attendant attendant) throws Exception {
+    public void update(Attendant attendant) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE attendant SET name = ?, surname = ?, iban=? WHERE fiscal_code = ?");
         ps.setString(1, attendant.getFirstName());
@@ -86,7 +87,7 @@ public class SQLiteAttendantDAO implements AttendantDAO {
     }
 
     @Override
-    public boolean delete(String cf) throws Exception {
+    public boolean delete(String cf) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("DELETE FROM attendant WHERE fiscal_code = ?");
         ps.setString(1, cf);

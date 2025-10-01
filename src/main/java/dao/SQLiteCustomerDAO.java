@@ -5,13 +5,14 @@ import domainModel.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SQLiteCustomerDAO implements CustomerDAO {
 
     @Override
-    public Customer get(String fc) throws Exception {
+    public Customer get(String fc) throws SQLException {
         Connection conn = Database.getConnection();
         Customer customer = null;
         PreparedStatement ps = conn.prepareStatement("select * from customers where fiscal_code = ?");
@@ -34,7 +35,7 @@ public class SQLiteCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> getAll() throws Exception {
+    public List<Customer> getAll() throws SQLException {
         Connection conn = Database.getConnection();
         List<Customer> customers = new ArrayList<>();
         PreparedStatement ps = conn.prepareStatement("select * from customers");
@@ -56,7 +57,7 @@ public class SQLiteCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public void insert(Customer customer) throws Exception {
+    public void insert(Customer customer) throws SQLException {
         Connection conn = Database.getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO customers(fiscal_code, name, surname, payment_method) VALUES (?, ?, ?,?)");
         ps.setString(1, customer.getCf());
@@ -70,7 +71,7 @@ public class SQLiteCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public void update(Customer customer) throws Exception {
+    public void update(Customer customer) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE customers SET name = ?, surname = ?, payment_method=? WHERE fiscal_code = ?");
         ps.setString(1, customer.getFirstName());
@@ -84,7 +85,7 @@ public class SQLiteCustomerDAO implements CustomerDAO {
     }
 
     @Override
-    public boolean delete(String cf) throws Exception {
+    public boolean delete(String cf) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("DELETE FROM customers WHERE fiscal_code = ?");
         ps.setString(1, cf);

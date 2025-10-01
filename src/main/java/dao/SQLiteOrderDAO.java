@@ -4,10 +4,7 @@ import domainModel.Order;
 import domainModel.OrderState.*;
 import domainModel.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +20,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public Order get(Integer id) throws Exception {
+    public Order get(Integer id) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from orders where id = ?");
         ps.setString(1, id.toString());
@@ -61,7 +58,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public List<Order> getAll() throws Exception {
+    public List<Order> getAll() throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from orders");
         ResultSet rs = ps.executeQuery();
@@ -95,7 +92,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public List<Order> getByUser(String id) throws Exception {
+    public List<Order> getByUser(String id) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from orders where id_customer = ?");
         ps.setString(1, id);
@@ -130,7 +127,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public void insert(Order order) throws Exception {
+    public void insert(Order order) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("INSERT INTO Orders(id_customer, state) VALUES (?,?)");
         ps.setString(1, order.getCustomerId());
@@ -142,7 +139,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public void update(Order order) throws Exception {
+    public void update(Order order) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE Orders SET state = (?) WHERE id = (?)");
         ps.setString(1, order.getState());
@@ -155,7 +152,7 @@ public class SQLiteOrderDAO implements OrderDAO {
 
     //TODO: delete on cascade SQLiteOrderDAO
     @Override
-    public boolean delete(Integer id) throws Exception {
+    public boolean delete(Integer id) throws SQLException {
         Order order = this.get(id);
         if (order == null)
             return false;
@@ -183,7 +180,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public List<Product> getProducts(int OrderId) throws Exception {
+    public List<Product> getProducts(int OrderId) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("select * from ProductOrder where order_id = (?)");
         ps.setInt(1, OrderId);
@@ -201,7 +198,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public void addProductToOrder(int ProductId, int OrderId) throws Exception {
+    public void addProductToOrder(int ProductId, int OrderId) throws SQLException {
         Connection conn = Database.getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO ProductOrder(product_id, order_id) VALUES (?,?)");
         ps.setInt(1, ProductId);
@@ -213,7 +210,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public boolean removeProductToOrder(int ProductId, int OrderId) throws Exception {
+    public boolean removeProductToOrder(int ProductId, int OrderId) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("DELETE FROM ProductOrder WHERE order_id = ? and product_id = ?");
         ps.setInt(1, OrderId);
@@ -226,7 +223,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public void changeState(Integer id, OrderState newState) throws Exception {
+    public void changeState(Integer id, OrderState newState) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE orders SET state = (?) WHERE id = (?)");
         ps.setString(1, newState.getState());

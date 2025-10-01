@@ -9,8 +9,7 @@ DROP TABLE   if exists  "Orders";
 
 -- Creazione tabella Categoria
 CREATE TABLE IF NOT EXISTS Category (
-                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                        description TEXT NOT NULL
+                                        description TEXT PRIMARY KEY
 );
 
 -- Creazione tabella prodotto
@@ -19,9 +18,9 @@ CREATE TABLE IF NOT EXISTS Products (
                                         name TEXT NOT NULL,
                                         description TEXT NOT NULL,
                                         price REAL NOT NULL,
-                                        id_category INTEGER,
+                                        descCategory TEXT,
                                         stock INTEGER,
-                                        FOREIGN KEY (id_category) REFERENCES Category(id)
+                                        FOREIGN KEY (descCategory) REFERENCES Category(description)
 );
 
 

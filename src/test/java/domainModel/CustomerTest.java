@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public class CustomerTest {
     public void CreatingCustomerWithEmptyName() {
+
         Assertions.assertThrows(
                 IllegalArgumentException.class,
                 () -> new Customer("", "Bonechi", "",""),

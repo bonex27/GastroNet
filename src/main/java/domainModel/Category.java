@@ -3,25 +3,25 @@ package domainModel;
 import java.util.Objects;
 
 public class Category {
-    private int id;
+
     private String description;
 
-    public Category(int id, String description) {
-        this.id = id;
+    public Category(String description) {
+
         this.description = description;
     }
 
     public Category(Category category) {
-        this.id = category.getId();
         this.description = category.getDescription();
     }
 
-    public int getId() {
-        return id;
-    }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -29,11 +29,11 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return id == category.id && Objects.equals(description, category.description);
+        return Objects.equals(description, category.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description);
+        return Objects.hash(description);
     }
 }
