@@ -43,8 +43,8 @@ public class SQLiteCustomerDAO implements CustomerDAO {
 
         while (rs.next()) {
             customers.add(new Customer(
-                    rs.getString("first_name"),
-                    rs.getString("last_name"),
+                    rs.getString("name"),
+                    rs.getString("surname"),
                     rs.getString("fiscal_code"),
                     rs.getString("payment_method")
             ));
