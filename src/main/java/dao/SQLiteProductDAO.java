@@ -67,7 +67,7 @@ public class SQLiteProductDAO implements ProductDAO {
     @Override
     public void insert(Product product) throws SQLException {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO Products (name, description, price, id_category, stock) VALUES (?, ?, ?, ?, ?)");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Products (name, description, price, descCategory, stock) VALUES (?, ?, ?, ?, ?)");
         // id is not needed because is autoincrement
         ps.setString(1, product.getName());
         ps.setString(2, product.getDescription());
@@ -83,7 +83,7 @@ public class SQLiteProductDAO implements ProductDAO {
     @Override
     public void update(Product product) throws SQLException {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("UPDATE Products SET name = (?), description = (?), price = (?), stock = (?), id_category = (?) WHERE id = (?)");
+        PreparedStatement ps = connection.prepareStatement("UPDATE Products SET name = (?), description = (?), price = (?), stock = (?), descCategory = (?) WHERE id = (?)");
         ps.setString(1, product.getName());
         ps.setString(1, product.getDescription());
         ps.setDouble(1, product.getPrice());
