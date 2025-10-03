@@ -23,8 +23,8 @@ public class SQLiteAttendantDAO implements AttendantDAO {
 
         if (rs.next()) {
             attendant = new Attendant(
-                    rs.getString("first_name"),
-                    rs.getString("last_name"),
+                    rs.getString("name"),
+                    rs.getString("surname"),
                     rs.getString("fiscal_code"),
                     rs.getString("iban")
             );
@@ -45,8 +45,8 @@ public class SQLiteAttendantDAO implements AttendantDAO {
 
         while (rs.next()) {
             attendants.add(new Attendant(
-                    rs.getString("first_name"),
-                    rs.getString("last_name"),
+                    rs.getString("name"),
+                    rs.getString("surname"),
                     rs.getString("fiscal_code"),
                     rs.getString("iban")
             ));

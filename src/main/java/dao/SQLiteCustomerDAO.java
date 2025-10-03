@@ -1,6 +1,5 @@
 package dao;
 
-import domainModel.Attendant;
 import domainModel.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

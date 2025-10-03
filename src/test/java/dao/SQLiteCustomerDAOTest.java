@@ -61,6 +61,9 @@ public class SQLiteCustomerDAOTest {
 
         Assertions.assertNotNull(addedCustomer);
         Assertions.assertEquals("CCC1234DDD", addedCustomer.getCf());
+        Assertions.assertEquals("Mario", addedCustomer.getFirstName());
+        Assertions.assertEquals("Rossi", addedCustomer.getLastName());
+        Assertions.assertEquals("Card", addedCustomer.getPaymentMethod());
     }
 
     @Test
