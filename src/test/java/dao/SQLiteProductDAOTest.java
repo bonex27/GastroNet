@@ -1,10 +1,7 @@
 package dao;
 
 import domainModel.Product;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -90,7 +87,7 @@ public class SQLiteProductDAOTest {
     void deleteProduct () throws SQLException {
         productDAO.delete(1);
         Product deletedProduct = productDAO.get(1);
-        Assertions.assertNotNull(deletedProduct);
+        Assertions.assertNull(deletedProduct);
     }
 
     @Test
