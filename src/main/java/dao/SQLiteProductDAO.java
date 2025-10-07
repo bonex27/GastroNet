@@ -85,11 +85,11 @@ public class SQLiteProductDAO implements ProductDAO {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE Products SET name = (?), description = (?), price = (?), stock = (?), descCategory = (?) WHERE id = (?)");
         ps.setString(1, product.getName());
-        ps.setString(1, product.getDescription());
-        ps.setDouble(1, product.getPrice());
-        ps.setInt(1, product.getStock());
-        ps.setString(1, product.getCategory().getDescription());
-        ps.setInt(1, product.getId());
+        ps.setString(2, product.getDescription());
+        ps.setDouble(3, product.getPrice());
+        ps.setInt(4, product.getStock());
+        ps.setString(5, product.getCategory().getDescription());
+        ps.setInt(6, product.getId());
         ps.executeUpdate();
 
         ps.close();
@@ -112,7 +112,7 @@ public class SQLiteProductDAO implements ProductDAO {
     }
 
     @Override
-    public int GetNextId() throws Exception {
+    public int GetNextId() throws SQLException {
         Connection connection = Database.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM products");
@@ -125,7 +125,7 @@ public class SQLiteProductDAO implements ProductDAO {
     }
 
     @Override
-    public void IncreaseStock(Product product, int quantity) throws Exception {
+    public void IncreaseStock(Product product, int quantity) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE Products SET stock = ? WHERE id = ?");
         ps.setInt(1, quantity + product.getStock());
@@ -137,7 +137,7 @@ public class SQLiteProductDAO implements ProductDAO {
     }
 
     @Override
-    public boolean DecreaseStock(Product product, int quantity) throws Exception {
+    public boolean DecreaseStock(Product product, int quantity) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement("UPDATE Products SET stock = ? WHERE id = ? and stock > ?");
         ps.setInt(1, product.getStock()- quantity);
@@ -151,7 +151,7 @@ public class SQLiteProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> search(String query) throws Exception {
+    public List<Product> search(String query) throws SQLException {
         Connection connection = Database.getConnection();
         PreparedStatement ps = connection.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
