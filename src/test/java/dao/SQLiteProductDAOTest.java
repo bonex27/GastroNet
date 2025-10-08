@@ -1,6 +1,10 @@
 package dao;
 
 import domainModel.Product;
+import domainModel.Search.DecoratorSearchPrice;
+import domainModel.Search.DecoratorSearchStock;
+import domainModel.Search.Search;
+import domainModel.Search.SearchConcrete;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -112,4 +116,21 @@ public class SQLiteProductDAOTest {
         Assertions.assertEquals(15,product.getStock());
     }
 
+    @Test
+    void testSerchProduct () throws SQLException {
+        Search search =  new DecoratorSearchPrice(
+                new DecoratorSearchStock(
+                        new SearchConcrete(),
+                        true
+                ),
+                2,
+                7
+        );
+        List<Product> productsSearched;
+        productsSearched = productDAO.search(search.getSearchQuery());
+        Assertions.assertEquals(1,productsSearched.size());
+        for (Product product : productsSearched) {
+            Assertions.assertTrue(product.getPrice()<=7 && product.getPrice()>=2);
+        }
+    }
 }
