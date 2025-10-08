@@ -167,7 +167,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     @Override
-    public int GetNextId() throws Exception {
+    public int GetNextId() throws SQLException {
         Connection connection = Database.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM Orders");
