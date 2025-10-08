@@ -56,7 +56,7 @@ public class OrderController {
             throw new IllegalArgumentException("The given product id does not exist.");
         if (!Objects.equals(order.getState(), "CustomerChoosing"))
             throw new RuntimeException("You can confirm an order only if is in the 'CustomerChoosing' state.");
-        if (product.getStock() == 0)
+        if (product.getStock() > 0)
             throw new IllegalArgumentException("The product is not available in the stock.");
 
         productDAO.DecreaseStock(product, 1);
