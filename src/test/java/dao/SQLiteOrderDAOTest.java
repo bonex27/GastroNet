@@ -34,7 +34,7 @@ public class SQLiteOrderDAOTest {
         customerDAO = new SQLiteCustomerDAO();
         productDAO = new SQLiteProductDAO(categoryDAO);
         orderDAO = new SQLiteOrderDAO(customerDAO, productDAO);
-
+        Database.getConnection().prepareStatement("DELETE FROM ProductOrder").executeUpdate();
         Database.getConnection().prepareStatement("DELETE FROM Orders").executeUpdate();
         Database.getConnection().prepareStatement("DELETE FROM Products").executeUpdate();
         Database.getConnection().prepareStatement("DELETE FROM Customers").executeUpdate();
@@ -57,10 +57,11 @@ public class SQLiteOrderDAOTest {
                 .prepareStatement("INSERT INTO Orders (id, id_customer, state) VALUES (1,'AAA','CustomerChoosing')").executeUpdate();
         Database.getConnection()
                 .prepareStatement("INSERT INTO Orders (id, id_customer, state) VALUES (2,'BBB','CustomerChoosing')").executeUpdate();
+
         Database.getConnection()
-                .prepareStatement("insert into  ProductOrder (order_id, product_id) VALUES (1,1)").executeUpdate();;
+                .prepareStatement("insert into  ProductOrder (order_id, product_id) VALUES (1,1)").executeUpdate();
         Database.getConnection()
-                .prepareStatement("insert into  ProductOrder (order_id, product_id) VALUES (1,2)").executeUpdate();;
+                .prepareStatement("insert into  ProductOrder (order_id, product_id) VALUES (1,2)").executeUpdate();
 
     }
 
