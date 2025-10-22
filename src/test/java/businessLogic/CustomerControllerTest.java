@@ -45,4 +45,25 @@ public class CustomerControllerTest {
        Assertions.assertNotNull(insertedCustomer);
        Assertions.assertEquals("MMM",insertedCustomer.getCf());
    }
+   @Test
+   void addCustomerTest_alreadyExisting()
+   {
+       Assertions.assertThrows(Exception.class,() ->customerController.addCustomer("Pietro","Bonechi","AAA","Cash"));
+   }
+
+    @Test
+    void deleteCustomerTest_ResultTrue() throws Exception {
+        boolean result = customerController.deletePerson("AAA");
+        Customer c = customerController.getPerson("AAA");
+        Assertions.assertTrue(result);
+        Assertions.assertNull(c);
+
+    }
+    @Test
+    void deleteCustomerTest_ResultFalse() throws Exception {
+        boolean result = customerController.deletePerson("CCC");
+        Assertions.assertFalse(result);
+
+    }
+
 }
