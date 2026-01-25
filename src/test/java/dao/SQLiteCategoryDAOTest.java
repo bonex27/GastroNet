@@ -56,6 +56,11 @@ class SQLiteCategoryDAOTest {
         Assertions.assertNotNull(addedCategory);
         Assertions.assertEquals("Dessert",addedCategory.getDescription());
     }
+    @Test
+    void testUpdate() throws SQLException {
+        Category category = new  Category("Dessert");
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {categoryDao.update(category);});
+    }
 
     @Test
     void  testDelete() throws SQLException {

@@ -69,11 +69,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id && Double.compare(price, product.price) == 0 && stock == product.stock && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(category, product.category);
+        return id == product.id  ;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, category, price, stock);
-    }
 }
