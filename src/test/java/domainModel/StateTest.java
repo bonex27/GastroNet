@@ -1,10 +1,8 @@
 package domainModel;
 
 import domainModel.OrderState.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 
 public class StateTest {
     private OrderState orderState;
