@@ -21,6 +21,13 @@ public class OrderController {
     private final ProductDAO productDAO;
     private final CustomerDAO customerDAO;
 
+    /**
+     * Builds a controller with the given DAOs.
+     *
+     * @param orderDAO DAO used to manage orders.
+     * @param productDAO DAO used to manage products.
+     * @param customerDAO DAO used to manage customers.
+     */
     public OrderController(OrderDAO orderDAO, ProductDAO productDAO, CustomerDAO customerDAO) {
         this.orderDAO = orderDAO;
         this.productDAO = productDAO;
@@ -28,18 +35,45 @@ public class OrderController {
     }
 
     // Order Management
+    /**
+     * Fetches a single order by id.
+     *
+     * @param id order id.
+     * @return order instance if found.
+     * @throws Exception if the DAO operation fails.
+     */
     public Order getOrder(int id) throws Exception {
         return orderDAO.get(id);
     }
 
+    /**
+     * Returns all orders as an unmodifiable list.
+     *
+     * @return list of all orders.
+     * @throws Exception if the DAO operation fails.
+     */
     public List<Order> getOrders() throws Exception {
         return unmodifiableList(orderDAO.getAll());
     }
 
+    /**
+     * Returns orders for a specific customer as an unmodifiable list.
+     *
+     * @param idCustomer customer fiscal code.
+     * @return list of orders for the customer.
+     * @throws Exception if the DAO operation fails.
+     */
     public List<Order> getOrders(String idCustomer) throws Exception {
         return unmodifiableList(orderDAO.getByUser(idCustomer));
     }
 
+    /**
+     * Creates a new order for the given customer and returns its id.
+     *
+     * @param cf_customer customer fiscal code.
+     * @return id of the created order.
+     * @throws Exception if the DAO operation fails.
+     */
     public int createOrder(String cf_customer) throws Exception {
         var customer = customerDAO.get(cf_customer);
         if (customer == null) {
@@ -50,6 +84,13 @@ public class OrderController {
         return order.getId();
     }
 
+    /**
+     * Adds a product to an order after validating availability and state.
+     *
+     * @param idProduct product id.
+     * @param idOrder order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void addProductToOrder(int idProduct, int idOrder) throws Exception {
         Product product = productDAO.get(idProduct);
         Order order = orderDAO.get(idOrder);
@@ -74,6 +115,13 @@ public class OrderController {
         }
     }
 
+    /**
+     * Removes a product from an order and restores stock if removed.
+     *
+     * @param idProduct product id.
+     * @param idOrder order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void removeProductFromOrder(int idProduct, int idOrder) throws Exception {
         Product product = productDAO.get(idProduct);
         Order existingOrder = orderDAO.get(idOrder);
@@ -93,6 +141,12 @@ public class OrderController {
         }
     }
 
+    /**
+     * Deletes an order if it is in a deletable state.
+     *
+     * @param id order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void deleteOrder(int id) throws Exception {
         Order order = orderDAO.get(id);
         if (order == null)
@@ -104,6 +158,12 @@ public class OrderController {
     //--
 
     // State Moving
+    /**
+     * Confirms an order and moves it to the pending state.
+     *
+     * @param id order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void confirmOrder(int id) throws Exception {
         Order order = this.getOrder(id);
 
@@ -116,6 +176,12 @@ public class OrderController {
         this.orderDAO.changeState(id, pendingState);
     }
 
+    /**
+     * Moves a pending order to the preparation state.
+     *
+     * @param id order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void startPreparation(int id) throws Exception {
         Order order = this.getOrder(id);
 
@@ -128,6 +194,12 @@ public class OrderController {
         this.orderDAO.changeState(id, preparationState);
     }
 
+    /**
+     * Moves a preparation order to the ready state.
+     *
+     * @param id order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void endPreparation(int id) throws Exception {
         Order order = this.getOrder(id);
 
@@ -140,6 +212,12 @@ public class OrderController {
         this.orderDAO.changeState(id, readyState);
     }
 
+    /**
+     * Moves a ready order to the delivered state.
+     *
+     * @param id order id.
+     * @throws Exception if the DAO operation fails.
+     */
     public void collectOrder(int id) throws Exception {
         Order order = this.getOrder(id);
 
