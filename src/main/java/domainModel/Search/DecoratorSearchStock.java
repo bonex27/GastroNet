@@ -9,9 +9,7 @@ public class DecoratorSearchStock extends BaseDecoratorSearch {
     }
 
     @Override
-    public String getSearchQuery() {
-        return super.getSearchQuery()
-                + (super.getSearchQuery().endsWith("WHERE") ? " " : " AND ")
-                + "p.stock " + (this.stock ? ">0" : "=0");
+    public SearchQuery getSearchQuery() {
+        return appendCondition(super.getSearchQuery(), "p.stock " + (this.stock ? "> 0" : "= 0"));
     }
 }

@@ -9,9 +9,7 @@ public class DecoratorSearchCategory extends BaseDecoratorSearch {
     }
 
     @Override
-    public String getSearchQuery() {
-        return super.getSearchQuery()
-                + (super.getSearchQuery().endsWith("WHERE") ? " " : " AND ")
-                + "p.id_category = (SELECT c.descCategory FROM categories c WHERE c.category = '" + this.category + "')";
+    public SearchQuery getSearchQuery() {
+        return appendCondition(super.getSearchQuery(), "p.descCategory = ?", this.category);
     }
 }

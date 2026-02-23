@@ -23,11 +23,14 @@ public class Customer extends Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(paymentMethod, customer.paymentMethod);
+        return Objects.equals(getCf(), customer.getCf())
+                && Objects.equals(getFirstName(), customer.getFirstName())
+                && Objects.equals(getLastName(), customer.getLastName())
+                && Objects.equals(paymentMethod, customer.paymentMethod);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(paymentMethod);
+        return Objects.hash(getCf(), getFirstName(), getLastName(), paymentMethod);
     }
 }

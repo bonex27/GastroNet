@@ -1,21 +1,36 @@
 package domainModel.Search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DecoratorSearchDescription extends BaseDecoratorSearch {
-    private final String[] str;
+    private final String[] terms;
 
     public DecoratorSearchDescription(Search decoratedSearch, String str) {
         super(decoratedSearch);
-        this.str = str.split(" ");
+        if (str == null || str.trim().isEmpty()) {
+            this.terms = new String[0];
+        } else {
+            this.terms = str.trim().split("\\s+");
+        }
     }
 
     @Override
-    public String getSearchQuery() {
-        String strOut = super.getSearchQuery() + (super.getSearchQuery().endsWith("WHERE") ? " (" : " AND (");
-        for (int i = 0; i < str.length; i++) {
-            strOut += "p.name LIKE '%" + str[i] + "%'" + ((i != str.length - 1) ? " OR " : ")");
+    public SearchQuery getSearchQuery() {
+        SearchQuery base = super.getSearchQuery();
+        if (terms.length == 0) {
+            return base;
         }
-        return strOut;
+        StringBuilder condition = new StringBuilder("(");
+        List<Object> params = new ArrayList<>();
+        for (int i = 0; i < terms.length; i++) {
+            condition.append("p.description LIKE ?");
+            params.add("%" + terms[i] + "%");
+            if (i < terms.length - 1) {
+                condition.append(" OR ");
+            }
+        }
+        condition.append(")");
+        return appendCondition(base, condition.toString(), params.toArray());
     }
 }

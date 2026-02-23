@@ -23,7 +23,7 @@ public class SQLiteCustomerDAO implements CustomerDAO {
                     rs.getString("name"),
                     rs.getString("surname"),
                     rs.getString("fiscal_code"),
-                    rs.getString("payment_Method")
+                    rs.getString("payment_method")
             );
         }
         rs.close();

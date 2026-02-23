@@ -2,6 +2,7 @@ package dao;
 
 import domainModel.Category;
 import domainModel.Product;
+import domainModel.Search.SearchQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,13 +68,13 @@ public class SQLiteProductDAO implements ProductDAO {
     @Override
     public void insert(Product product) throws SQLException {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO Products (name, description, price, descCategory, stock) VALUES (?, ?, ?, ?, ?)");
-        // id is not needed because is autoincrement
-        ps.setString(1, product.getName());
-        ps.setString(2, product.getDescription());
-        ps.setDouble(3, product.getPrice());
-        ps.setString(4, (product.getCategory().getDescription()));
-        ps.setInt(5, product.getStock());
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Products (id, name, description, price, descCategory, stock) VALUES (?, ?, ?, ?, ?, ?)");
+        ps.setInt(1, product.getId());
+        ps.setString(2, product.getName());
+        ps.setString(3, product.getDescription());
+        ps.setDouble(4, product.getPrice());
+        ps.setString(5, product.getCategory().getDescription());
+        ps.setInt(6, product.getStock());
         ps.executeUpdate();
 
         ps.close();
@@ -116,7 +117,10 @@ public class SQLiteProductDAO implements ProductDAO {
         Connection connection = Database.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM products");
-        int id = rs.getInt(1) + 1;
+        int id = 1;
+        if (rs.next()) {
+            id = rs.getInt(1) + 1;
+        }
 
         rs.close();
         stmt.close();
@@ -139,8 +143,8 @@ public class SQLiteProductDAO implements ProductDAO {
     @Override
     public boolean DecreaseStock(Product product, int quantity) throws SQLException {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("UPDATE Products SET stock = ? WHERE id = ? and stock > ?");
-        ps.setInt(1, product.getStock()- quantity);
+        PreparedStatement ps = connection.prepareStatement("UPDATE Products SET stock = stock - ? WHERE id = ? and stock >= ?");
+        ps.setInt(1, quantity);
         ps.setInt(2, product.getId());
         ps.setInt(3, quantity);
         int updated = ps.executeUpdate();
@@ -151,9 +155,13 @@ public class SQLiteProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> search(String query) throws SQLException {
+    public List<Product> search(SearchQuery query) throws SQLException {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement(query);
+        PreparedStatement ps = connection.prepareStatement(query.getSql());
+        List<Object> params = query.getParams();
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
         ResultSet rs = ps.executeQuery();
 
         List<Product> products = new ArrayList<>();

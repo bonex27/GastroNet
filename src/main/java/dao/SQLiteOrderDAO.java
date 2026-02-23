@@ -27,22 +27,8 @@ public class SQLiteOrderDAO implements OrderDAO {
         ResultSet rs = ps.executeQuery();
         Order order = null;
 
-        String stateString = rs.getString("state");
-
-        OrderState state;
-        if (Objects.equals(rs.getString("state"), "Pending"))
-            state = new PendingState();
-        else if (Objects.equals(rs.getString("state"), "Preparation"))
-            state = new PreparationState();
-        else if (Objects.equals(rs.getString("state"), "Ready"))
-            state = new ReadyState();
-        else if (Objects.equals(rs.getString("state"), "Delivered"))
-            state = new DeliveredState();
-        else
-            state = new CustomerChoosingState();
-
-
         if (rs.next()) {
+            OrderState state = toState(rs.getString("state"));
             order = new Order(
                     rs.getInt("id"),
                     customerDAO.get(rs.getString("id_customer")),
@@ -66,16 +52,7 @@ public class SQLiteOrderDAO implements OrderDAO {
         OrderState state;
 
         while (rs.next()) {
-            if (Objects.equals(rs.getString("state"), "Pending"))
-                state = new PendingState();
-            else if (Objects.equals(rs.getString("state"), "Preparation"))
-                state = new PreparationState();
-            else if (Objects.equals(rs.getString("state"), "Ready"))
-                state = new ReadyState();
-            else if (Objects.equals(rs.getString("state"), "Delivered"))
-                state = new DeliveredState();
-            else
-                state = new CustomerChoosingState();
+            state = toState(rs.getString("state"));
 
             orders.add(new Order(
                     rs.getInt("id"),
@@ -101,16 +78,7 @@ public class SQLiteOrderDAO implements OrderDAO {
         OrderState state;
 
         while (rs.next()) {
-            if (Objects.equals(rs.getString("state"), "Pending"))
-                state = new PendingState();
-            else if (Objects.equals(rs.getString("state"), "Preparation"))
-                state = new PreparationState();
-            else if (Objects.equals(rs.getString("state"), "Ready"))
-                state = new ReadyState();
-            else if (Objects.equals(rs.getString("state"), "Delivered"))
-                state = new DeliveredState();
-            else
-                state = new CustomerChoosingState();
+            state = toState(rs.getString("state"));
 
             orders.add(new Order(
                     rs.getInt("id"),
@@ -129,9 +97,10 @@ public class SQLiteOrderDAO implements OrderDAO {
     @Override
     public void insert(Order order) throws SQLException {
         Connection connection = Database.getConnection();
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO Orders(id_customer, state) VALUES (?,?)");
-        ps.setString(1, order.getCustomerId());
-        ps.setString(2, order.getState());
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Orders(id, id_customer, state) VALUES (?,?,?)");
+        ps.setInt(1, order.getId());
+        ps.setString(2, order.getCustomerId());
+        ps.setString(3, order.getState());
         ps.executeUpdate();
 
         ps.close();
@@ -171,12 +140,27 @@ public class SQLiteOrderDAO implements OrderDAO {
         Connection connection = Database.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM Orders");
-        int id = rs.getInt(1) + 1;
+        int id = 1;
+        if (rs.next()) {
+            id = rs.getInt(1) + 1;
+        }
 
         rs.close();
         stmt.close();
         Database.closeConnection(connection);
         return id;
+    }
+
+    private OrderState toState(String stateValue) {
+        if (Objects.equals(stateValue, "Pending"))
+            return new PendingState();
+        if (Objects.equals(stateValue, "Preparation"))
+            return new PreparationState();
+        if (Objects.equals(stateValue, "Ready"))
+            return new ReadyState();
+        if (Objects.equals(stateValue, "Delivered"))
+            return new DeliveredState();
+        return new CustomerChoosingState();
     }
 
     @Override

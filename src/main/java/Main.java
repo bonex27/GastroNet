@@ -10,7 +10,6 @@ import domainModel.Search.SearchConcrete;
 import java.util.List;
 
 public class Main {
-    //TODO Test restanti: businessLogic, domainModel, Order dao
     public static final String RED_MESSAGE = "\033[0;31m";     // Red ansi for manage errore printout
     public static void main(String[] args) throws Exception {
         Database.setDatabase("main.db");

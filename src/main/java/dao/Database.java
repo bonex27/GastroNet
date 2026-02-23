@@ -58,18 +58,14 @@ public class Database {
      */
     public static int initDatabase() throws IOException, SQLException {
         StringBuilder resultStringBuilder = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader("src/main/resources/database/schema.sql"));
-        String line;
-        while ((line = br.readLine()) != null) {
-            resultStringBuilder.append(line).append("\n");
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/database/schema.sql"));
+             Connection connection = getConnection();
+             Statement stmt = connection.createStatement()) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+            return stmt.executeUpdate(resultStringBuilder.toString());
         }
-
-        Connection connection = getConnection();
-        Statement stmt = getConnection().createStatement();
-        int row = stmt.executeUpdate(resultStringBuilder.toString());
-
-        stmt.close();
-        closeConnection(connection);
-        return row;
     }
 }

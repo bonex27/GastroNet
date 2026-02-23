@@ -4,6 +4,7 @@ import dao.ProductDAO;
 import domainModel.Category;
 import domainModel.Product;
 import domainModel.Search.Search;
+import domainModel.Search.SearchQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,8 @@ public class ProductController {
     }
 
     public List<Product> Search(Search search) throws Exception {
-        System.out.println(search.getSearchQuery());
-        return productDAO.search(search.getSearchQuery());
+        SearchQuery query = search.getSearchQuery();
+        System.out.println(query.getSql());
+        return productDAO.search(query);
     }
 }

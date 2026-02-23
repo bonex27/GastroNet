@@ -41,7 +41,11 @@ public class OrderController {
     }
 
     public int createOrder(String cf_customer) throws Exception {
-        Order order = new Order(orderDAO.GetNextId(), customerDAO.get(cf_customer));
+        var customer = customerDAO.get(cf_customer);
+        if (customer == null) {
+            throw new IllegalArgumentException("The given customer id does not exist.");
+        }
+        Order order = new Order(orderDAO.GetNextId(), customer);
         orderDAO.insert(order);
         return order.getId();
     }
@@ -59,18 +63,26 @@ public class OrderController {
         if (product.getStock() <= 0)
             throw new IllegalArgumentException("The product is not available in the stock.");
 
-        productDAO.DecreaseStock(product, 1);
-        orderDAO.addProductToOrder(idProduct, idOrder);
+        if (!productDAO.DecreaseStock(product, 1)) {
+            throw new IllegalArgumentException("The product is not available in the stock.");
+        }
+        try {
+            orderDAO.addProductToOrder(idProduct, idOrder);
+        } catch (Exception e) {
+            productDAO.IncreaseStock(product, 1);
+            throw e;
+        }
     }
 
     public void removeProductFromOrder(int idProduct, int idOrder) throws Exception {
         Product product = productDAO.get(idProduct);
-        Order order = new Order( orderDAO.get(idOrder));
+        Order existingOrder = orderDAO.get(idOrder);
 
-        if (order == null)
+        if (existingOrder == null)
             throw new IllegalArgumentException("The given order id does not exist.");
         if (product == null)
             throw new IllegalArgumentException("The given product id does not exist.");
+        Order order = new Order(existingOrder);
         if (!Objects.equals(order.getState(), "CustomerChoosing"))
             throw new RuntimeException("You can remove an order only if is in the 'CustomerChoosing' state.");
         if (!order.getProducts().contains(product))
@@ -141,12 +153,3 @@ public class OrderController {
     }
     // --
 }
-
-/*
- * Ordine stati:
- * 1)CustomerChoosing
- * 2)Pending -> confirmOrder()
- * 3)Preparation -> startPreparation()
- * 4)Ready -> endPreparation()
- * 5)Delivered -> collectOrder()
- */
