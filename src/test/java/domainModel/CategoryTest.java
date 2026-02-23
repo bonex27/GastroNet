@@ -24,7 +24,7 @@ public class CategoryTest {
     public void equalsAndHashCodeDependOnDescription() {
         Category first = new Category("Dessert");
         Category second = new Category("Dessert");
-        Category different = new Category("Main");
+        Category different = new Category("Second course");
 
         Assertions.assertEquals(first, second);
         Assertions.assertEquals(first.hashCode(), second.hashCode());
@@ -33,9 +33,9 @@ public class CategoryTest {
 
     @Test
     public void setDescriptionUpdatesValue() {
-        Category category = new Category("Old");
-        category.setDescription("New");
+        Category category = new Category("Starter");
+        category.setDescription("Soup");
 
-        Assertions.assertEquals("New", category.getDescription());
+        Assertions.assertEquals("Soup", category.getDescription());
     }
 }

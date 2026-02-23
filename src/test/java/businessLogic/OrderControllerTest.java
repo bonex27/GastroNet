@@ -52,11 +52,11 @@ public class OrderControllerTest {
         customerController = new CustomerController(customerDAO);
         categoryController = new CategoryController(categoryDAO);
 
-        category = categoryController.CreateCategory("Elettronica");
+        category = categoryController.CreateCategory("Primi");
         customerController.addCustomer("Mario", "Rossi", "RSSMRA80A01H501X", "Cash");
         customer = customerController.getPerson("RSSMRA80A01H501X");
 
-        int productId = productController.AddProduct("Laptop", "Gaming laptop", 999.99, category, 10);
+        int productId = productController.AddProduct("Lasagna", "Pasta al forno", 9.99, category, 10);
         product = productController.getProduct(productId);
     }
 

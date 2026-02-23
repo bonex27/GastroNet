@@ -34,17 +34,17 @@ public class CategoryControllerTest {
 
     @Test
     void testCreateCategory_Success() throws SQLException {
-        Category category = categoryController.CreateCategory("Elettronica");
+        Category category = categoryController.CreateCategory("Primi");
 
         assertNotNull(category);
-        assertEquals("Elettronica", category.getDescription());
+        assertEquals("Primi", category.getDescription());
     }
 
     @Test
     void testCreateCategory_Multiple() throws SQLException {
-        categoryController.CreateCategory("Elettronica");
-        categoryController.CreateCategory("Abbigliamento");
-        categoryController.CreateCategory("Alimentari");
+        categoryController.CreateCategory("Primi");
+        categoryController.CreateCategory("Secondi");
+        categoryController.CreateCategory("Dolci");
 
         List<Category> categories = categoryController.categoryDAO.getAll();
         assertEquals(3, categories.size());

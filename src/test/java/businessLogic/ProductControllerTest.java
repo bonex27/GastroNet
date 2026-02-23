@@ -1,5 +1,4 @@
 package businessLogic;
-import dao.CategoryDAO;
 import dao.SQLiteCategoryDAO;
 import dao.Database;
 import java.io.IOException;
@@ -38,24 +37,24 @@ public class ProductControllerTest {
         productController = new ProductController(productDAO);
         categoryController = new CategoryController(categoryDAO);
 
-        category = categoryController.CreateCategory("Elettronica");
+        category = categoryController.CreateCategory("Primi");
     }
 
     @Test
     void testAddProduct_Success() throws Exception {
-        int productId = productController.AddProduct("Laptop", "Gaming laptop", 999.99, category, 10);
+        int productId = productController.AddProduct("Lasagna", "Pasta al forno", 9.99, category, 10);
 
         Product retrieved = productController.getProduct(productId);
         assertNotNull(retrieved);
-        assertEquals("Laptop", retrieved.getName());
-        assertEquals("Gaming laptop", retrieved.getDescription());
-        assertEquals(999.99, retrieved.getPrice());
+        assertEquals("Lasagna", retrieved.getName());
+        assertEquals("Pasta al forno", retrieved.getDescription());
+        assertEquals(9.99, retrieved.getPrice());
         assertEquals(10, retrieved.getStock());
     }
 
     @Test
     void testGetProduct_Success() throws Exception {
-        int productId = productController.AddProduct("Mouse", "Wireless mouse", 29.99, category, 50);
+        int productId = productController.AddProduct("Risotto", "Risotto ai funghi", 7.99, category, 50);
 
         Product retrieved = productController.getProduct(productId);
         assertNotNull(retrieved);
@@ -70,7 +69,7 @@ public class ProductControllerTest {
 
     @Test
     void testDeleteProduct_Success() throws Exception {
-        int productId = productController.AddProduct("Keyboard", "Mechanical", 89.99, category, 20);
+        int productId = productController.AddProduct("Polpette", "Al sugo", 6.50, category, 20);
 
         boolean result = productController.deleteProduct(productId);
         assertTrue(result);
@@ -81,7 +80,7 @@ public class ProductControllerTest {
 
     @Test
     void testIncreaseProductQuantity_Success() throws Exception {
-        int productId = productController.AddProduct("Monitor", "4K Monitor", 399.99, category, 15);
+        int productId = productController.AddProduct("Insalata", "Mista", 4.50, category, 15);
 
         productController.IncreaseProductQuantity(productId, 10);
 
@@ -91,7 +90,7 @@ public class ProductControllerTest {
 
     @Test
     void testDecreaseProductQuantity_Success() throws Exception {
-        int productId = productController.AddProduct("Headphones", "Wireless", 79.99, category, 30);
+        int productId = productController.AddProduct("Pane", "Integrale", 1.20, category, 30);
 
         boolean result = productController.DecreaseProductQuantity(productId, 5);
         assertTrue(result);
@@ -102,7 +101,7 @@ public class ProductControllerTest {
 
     @Test
     void testDecreaseProductQuantity_InsufficientStock_ReturnsFalse() throws Exception {
-        int productId = productController.AddProduct("Cable", "USB-C", 9.99, category, 3);
+        int productId = productController.AddProduct("Mela", "Golden", 0.90, category, 3);
 
         boolean result = productController.DecreaseProductQuantity(productId, 10);
         assertFalse(result);
@@ -110,9 +109,9 @@ public class ProductControllerTest {
 
     @Test
     void testGetProductList_Success() throws Exception {
-        productController.AddProduct("Product1", "Desc1", 10.0, category, 5);
-        productController.AddProduct("Product2", "Desc2", 20.0, category, 10);
-        productController.AddProduct("Product3", "Desc3", 30.0, category, 15);
+        productController.AddProduct("Pasta", "Al pomodoro", 6.0, category, 5);
+        productController.AddProduct("Zuppa", "Di legumi", 5.0, category, 10);
+        productController.AddProduct("Torta", "Di mele", 4.0, category, 15);
 
         List<Product> products = productController.GetProductList();
         assertEquals(3, products.size());
