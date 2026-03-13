@@ -158,9 +158,7 @@ public class OrderController {
                 Objects.equals(order.getState(), "CustomerChoosing") || Objects.equals(order.getState(), "Pending")
         );
     }
-    //--
 
-    // State Moving
     /**
      * Confirms an order and moves it to the pending state.
      *
@@ -232,5 +230,4 @@ public class OrderController {
         DeliveredState deliveredState = new DeliveredState();
         this.orderDAO.changeState(id, deliveredState);
     }
-    // --
 }

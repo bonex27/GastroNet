@@ -9,7 +9,7 @@ import domainModel.Search.SearchQuery;
 import java.util.List;
 
 public class ProductController {
-    ProductDAO productDAO;
+    private final ProductDAO productDAO;
 
     /**
      * Builds a controller with the given product data access.

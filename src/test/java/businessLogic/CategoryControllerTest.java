@@ -46,7 +46,7 @@ public class CategoryControllerTest {
         categoryController.CreateCategory("Secondi");
         categoryController.CreateCategory("Dolci");
 
-        List<Category> categories = categoryController.categoryDAO.getAll();
+        List<Category> categories = categoryController.GetAllCategories();
         assertEquals(3, categories.size());
     }
 

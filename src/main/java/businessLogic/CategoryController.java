@@ -4,9 +4,10 @@ import dao.CategoryDAO;
 import domainModel.Category;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class CategoryController {
-    public final CategoryDAO categoryDAO;
+    private final CategoryDAO categoryDAO;
 
     /**
      * Builds a controller with the given category DAO.
@@ -28,5 +29,10 @@ public class CategoryController {
         Category category = new Category(description);
         categoryDAO.insert(category);
         return category;
+    }
+
+    public List<Category> GetAllCategories() throws SQLException {
+        List<Category> categories = categoryDAO.getAll();
+        return categories;
     }
 }
