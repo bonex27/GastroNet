@@ -1,10 +1,7 @@
 package businessLogic;
 
 import dao.*;
-import domainModel.Category;
-import domainModel.Customer;
-import domainModel.Order;
-import domainModel.Product;
+import domainModel.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderControllerTest {
 
@@ -108,12 +106,17 @@ public class OrderControllerTest {
     }
 
     @Test
-    void testDeleteOrder_InvalidState_ThrowsException() throws Exception {
+    void testDeleteOrder_WithoutIssue() throws Exception {
         int orderId = orderController.createOrder(customer.getCf());
         orderController.confirmOrder(orderId);
         orderController.startPreparation(orderId);
 
-        assertThrows(RuntimeException.class, () -> orderController.deleteOrder(orderId));
+        var deleteResult = orderController.deleteOrder(orderId);
+
+        assertTrue(deleteResult.cancellato());
+        assertFalse(deleteResult.reso());
+        //Se provo ad eliminare due volte ottenog un eccezione dato che non esiste più l'oggetto
+        assertThrows(RuntimeException.class, () ->orderController.deleteOrder(orderId));
     }
 
     @Test
