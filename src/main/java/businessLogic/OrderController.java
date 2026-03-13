@@ -3,6 +3,7 @@ package businessLogic;
 import dao.CustomerDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
+import domainModel.CancelResult;
 import domainModel.Order;
 import domainModel.OrderState.DeliveredState;
 import domainModel.OrderState.PendingState;
@@ -147,13 +148,15 @@ public class OrderController {
      * @param id order id.
      * @throws Exception if the DAO operation fails.
      */
-    public void deleteOrder(int id) throws Exception {
+    public CancelResult deleteOrder(int id) throws Exception {
         Order order = orderDAO.get(id);
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
-        if (!Objects.equals(order.getState(), "CustomerChoosing") && !Objects.equals(order.getState(), "Pending"))
-            throw new RuntimeException("You can delete an order only if is in the 'CustomerChoosing' or 'Pending' state.");
-        orderDAO.delete(id);
+
+        return new CancelResult(
+                orderDAO.delete(id),
+                Objects.equals(order.getState(), "CustomerChoosing") || Objects.equals(order.getState(), "Pending")
+        );
     }
     //--
 
