@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "Orders" (
 
 CREATE TABLE IF NOT EXISTS ProductOrder (
                                             order_id INTEGER NOT NULL,
-                                            product_id TEXT NOT NULL,
+                                            product_id INTEGER NOT NULL,
                                             primary key (order_id,product_id),
                                             FOREIGN KEY (order_id) references "Orders"(id),
                                             FOREIGN KEY (product_id) references Products(id)
