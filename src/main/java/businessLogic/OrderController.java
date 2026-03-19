@@ -5,14 +5,9 @@ import dao.OrderDAO;
 import dao.ProductDAO;
 import domainModel.CancelResult;
 import domainModel.Order;
-import domainModel.OrderState.DeliveredState;
-import domainModel.OrderState.PendingState;
-import domainModel.OrderState.PreparationState;
-import domainModel.OrderState.ReadyState;
 import domainModel.Product;
 
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -100,8 +95,8 @@ public class OrderController {
             throw new IllegalArgumentException("The given order id does not exist.");
         if (product == null)
             throw new IllegalArgumentException("The given product id does not exist.");
-        if (!Objects.equals(order.getState(), "CustomerChoosing"))
-            throw new RuntimeException("You can confirm an order only if is in the 'CustomerChoosing' state.");
+        if (!order.canAddProducts())
+            throw new IllegalStateException("You can add products only when the order allows product changes.");
         if (product.getStock() <= 0)
             throw new IllegalArgumentException("The product is not available in the stock.");
 
@@ -131,10 +126,9 @@ public class OrderController {
             throw new IllegalArgumentException("The given order id does not exist.");
         if (product == null)
             throw new IllegalArgumentException("The given product id does not exist.");
-        Order order = new Order(existingOrder);
-        if (!Objects.equals(order.getState(), "CustomerChoosing"))
-            throw new RuntimeException("You can remove an order only if is in the 'CustomerChoosing' state.");
-        if (!order.getProducts().contains(product))
+        if (!existingOrder.canRemoveProducts())
+            throw new IllegalStateException("You can remove products only when the order allows product changes.");
+        if (!existingOrder.getProducts().contains(product))
             throw new IllegalArgumentException("The product is not present in the order.");
 
         if (orderDAO.removeProductToOrder(idProduct, idOrder)) {
@@ -152,10 +146,12 @@ public class OrderController {
         Order order = orderDAO.get(id);
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
+        if (!order.canDelete())
+            throw new IllegalStateException("You can delete an order only if its current state allows cancellation.");
 
         return new CancelResult(
                 orderDAO.delete(id),
-                Objects.equals(order.getState(), "CustomerChoosing") || Objects.equals(order.getState(), "Pending")
+                order.isRefundableOnDelete()
         );
     }
 
@@ -170,11 +166,8 @@ public class OrderController {
 
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
-        if (!Objects.equals(order.getState(), "CustomerChoosing"))
-            throw new RuntimeException("You can confirm an order only if is in the 'CustomerChoosing' state.");
-
-        PendingState pendingState = new PendingState();
-        this.orderDAO.changeState(id, pendingState);
+        order.confirm();
+        this.orderDAO.changeState(id, order.getOrderState());
     }
 
     /**
@@ -188,11 +181,8 @@ public class OrderController {
 
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
-        if (!Objects.equals(order.getState(), "Pending"))
-            throw new RuntimeException("You can confirm an order only if is in the 'Pending' state.");
-
-        PreparationState preparationState = new PreparationState();
-        this.orderDAO.changeState(id, preparationState);
+        order.startPreparation();
+        this.orderDAO.changeState(id, order.getOrderState());
     }
 
     /**
@@ -206,11 +196,8 @@ public class OrderController {
 
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
-        if (!Objects.equals(order.getState(), "Preparation"))
-            throw new RuntimeException("You can confirm an order only if is in the 'Preparation' state.");
-
-        ReadyState readyState = new ReadyState();
-        this.orderDAO.changeState(id, readyState);
+        order.endPreparation();
+        this.orderDAO.changeState(id, order.getOrderState());
     }
 
     /**
@@ -224,10 +211,7 @@ public class OrderController {
 
         if (order == null)
             throw new IllegalArgumentException("The given order id does not exist.");
-        if (!Objects.equals(order.getState(), "Ready"))
-            throw new RuntimeException("You can confirm an order only if is in the 'Ready' state.");
-
-        DeliveredState deliveredState = new DeliveredState();
-        this.orderDAO.changeState(id, deliveredState);
+        order.collect();
+        this.orderDAO.changeState(id, order.getOrderState());
     }
 }

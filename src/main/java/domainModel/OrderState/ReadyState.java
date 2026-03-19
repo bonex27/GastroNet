@@ -5,4 +5,19 @@ public class ReadyState extends OrderState {
     public String getState() {
         return "Ready";
     }
+
+    @Override
+    public OrderState collect(domainModel.Order order) {
+        return new DeliveredState();
+    }
+
+    @Override
+    public boolean canDelete() {
+        return true;
+    }
+
+    @Override
+    public OrderState copy() {
+        return new ReadyState();
+    }
 }

@@ -16,40 +16,26 @@ public class Order {
     public Order(int id, Customer customer) {
         this.id = id;
         this.customer = customer;
-        this.products = new ArrayList<Product>();
+        this.products = new ArrayList<>();
         this.state = new CustomerChoosingState();
     }
 
     public Order(int id, Customer customer, OrderState state, List<Product> products) {
         this.id = id;
         this.customer = customer;
-        this.products = products;
-        this.state = state;
+        this.products = products == null ? new ArrayList<>() : new ArrayList<>(products);
+        this.state = state == null ? new CustomerChoosingState() : state;
     }
 
     public Order(Order order) {
         this.id = order.getId();
         this.customer = new Customer(order.customer);
-        this.products = new ArrayList<Product>();
+        this.products = new ArrayList<>();
 
         for (Product i : order.products) {
-            this.products.add(new Product(i)); // deep copy di ogni elemento
+            this.products.add(new Product(i));
         }
-        if (order.state instanceof CustomerChoosingState) {
-            state = new CustomerChoosingState();
-        }
-        else if (order.state instanceof PendingState) {
-            state = new PendingState();
-        }
-        else if (order.state instanceof PreparationState) {
-            state = new PreparationState();
-        }
-        else if(order.state instanceof DeliveredState) {
-            state = new DeliveredState();
-        }
-        else if(order.state instanceof ReadyState) {
-            state = new ReadyState();
-        }
+        this.state = order.state.copy();
     }
 
     public int getId() {
@@ -64,8 +50,48 @@ public class Order {
         return state.getState();
     }
 
+    public OrderState getOrderState() {
+        return state;
+    }
+
+    public void confirm() {
+        changeState(state.confirm(this));
+    }
+
+    public void startPreparation() {
+        changeState(state.startPreparation(this));
+    }
+
+    public void endPreparation() {
+        changeState(state.endPreparation(this));
+    }
+
+    public void collect() {
+        changeState(state.collect(this));
+    }
+
+    public boolean canAddProducts() {
+        return state.canAddProducts();
+    }
+
+    public boolean canRemoveProducts() {
+        return state.canRemoveProducts();
+    }
+
+    public boolean canDelete() {
+        return state.canDelete();
+    }
+
+    public boolean isRefundableOnDelete() {
+        return state.isRefundableOnDelete();
+    }
+
     public List<Product> getProducts() {
         return products;
+    }
+
+    private void changeState(OrderState newState) {
+        this.state = Objects.requireNonNull(newState);
     }
 
     @Override
@@ -84,11 +110,14 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && Objects.equals(state, order.state) && Objects.equals(customer, order.customer) && Objects.equals(products, order.products);
+        return id == order.id
+                && Objects.equals(getState(), order.getState())
+                && Objects.equals(customer, order.customer)
+                && Objects.equals(products, order.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, state, customer, products);
+        return Objects.hash(id, getState(), customer, products);
     }
 }

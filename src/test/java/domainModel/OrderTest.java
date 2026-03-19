@@ -37,6 +37,7 @@ public class OrderTest {
         Assertions.assertEquals(1, copy.getProducts().size());
         Assertions.assertNotSame(original.getProducts().getFirst(), copy.getProducts().getFirst());
         Assertions.assertEquals(original.getProducts().getFirst(), copy.getProducts().getFirst());
+        Assertions.assertNotSame(original.getOrderState(), copy.getOrderState());
     }
 
     @Test
@@ -53,5 +54,25 @@ public class OrderTest {
         Assertions.assertTrue(output.contains("Marco Blu"));
         Assertions.assertTrue(output.contains("Pending"));
         Assertions.assertTrue(output.contains("Cake"));
+    }
+
+    @Test
+    public void domainStateTransitionsFollowStatePattern() {
+        Customer customer = new Customer("Luca", "Verdi", "CF001", "cash");
+        Order order = new Order(10, customer);
+
+        order.confirm();
+        Assertions.assertEquals("Pending", order.getState());
+
+        order.startPreparation();
+        Assertions.assertEquals("Preparation", order.getState());
+
+        order.endPreparation();
+        Assertions.assertEquals("Ready", order.getState());
+
+        order.collect();
+        Assertions.assertEquals("Delivered", order.getState());
+
+        Assertions.assertThrows(IllegalStateException.class, order::confirm);
     }
 }

@@ -5,4 +5,9 @@ public class DeliveredState extends OrderState {
     public String getState() {
         return "Delivered";
     }
+
+    @Override
+    public OrderState copy() {
+        return new DeliveredState();
+    }
 }

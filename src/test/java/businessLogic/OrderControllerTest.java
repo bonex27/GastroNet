@@ -99,7 +99,9 @@ public class OrderControllerTest {
     void testDeleteOrder_CustomerChoosing_Success() throws Exception {
         int orderId = orderController.createOrder(customer.getCf());
 
-        assertDoesNotThrow(() -> orderController.deleteOrder(orderId));
+        CancelResult result = assertDoesNotThrow(() -> orderController.deleteOrder(orderId));
+        assertTrue(result.cancellato());
+        assertTrue(result.reso());
 
         Order retrieved = orderController.getOrder(orderId);
         assertNull(retrieved);
@@ -117,6 +119,41 @@ public class OrderControllerTest {
         assertFalse(deleteResult.reso());
         //Se provo ad eliminare due volte ottenog un eccezione dato che non esiste più l'oggetto
         assertThrows(RuntimeException.class, () ->orderController.deleteOrder(orderId));
+    }
+
+    @Test
+    void testDeleteOrder_Pending_ReturnsRefund() throws Exception {
+        int orderId = orderController.createOrder(customer.getCf());
+        orderController.confirmOrder(orderId);
+
+        CancelResult deleteResult = orderController.deleteOrder(orderId);
+
+        assertTrue(deleteResult.cancellato());
+        assertTrue(deleteResult.reso());
+    }
+
+    @Test
+    void testDeleteOrder_Ready_WithoutRefund() throws Exception {
+        int orderId = orderController.createOrder(customer.getCf());
+        orderController.confirmOrder(orderId);
+        orderController.startPreparation(orderId);
+        orderController.endPreparation(orderId);
+
+        CancelResult deleteResult = orderController.deleteOrder(orderId);
+
+        assertTrue(deleteResult.cancellato());
+        assertFalse(deleteResult.reso());
+    }
+
+    @Test
+    void testDeleteOrder_Delivered_ThrowsException() throws Exception {
+        int orderId = orderController.createOrder(customer.getCf());
+        orderController.confirmOrder(orderId);
+        orderController.startPreparation(orderId);
+        orderController.endPreparation(orderId);
+        orderController.collectOrder(orderId);
+
+        assertThrows(IllegalStateException.class, () -> orderController.deleteOrder(orderId));
     }
 
     @Test
@@ -223,5 +260,22 @@ public class OrderControllerTest {
 
         Order retrieved = orderController.getOrder(orderId);
         assertFalse(retrieved.getProducts().contains(product));
+    }
+
+    @Test
+    void testAddProductToOrder_InvalidState_ThrowsException() throws Exception {
+        int orderId = orderController.createOrder(customer.getCf());
+        orderController.confirmOrder(orderId);
+
+        assertThrows(IllegalStateException.class, () -> orderController.addProductToOrder(product.getId(), orderId));
+    }
+
+    @Test
+    void testRemoveProductFromOrder_InvalidState_ThrowsException() throws Exception {
+        int orderId = orderController.createOrder(customer.getCf());
+        orderController.addProductToOrder(product.getId(), orderId);
+        orderController.confirmOrder(orderId);
+
+        assertThrows(IllegalStateException.class, () -> orderController.removeProductFromOrder(product.getId(), orderId));
     }
 }

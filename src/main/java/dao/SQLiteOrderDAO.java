@@ -1,13 +1,12 @@
 package dao;
 
 import domainModel.Order;
-import domainModel.OrderState.*;
+import domainModel.OrderState.OrderState;
 import domainModel.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SQLiteOrderDAO implements OrderDAO {
 
@@ -152,15 +151,7 @@ public class SQLiteOrderDAO implements OrderDAO {
     }
 
     private OrderState toState(String stateValue) {
-        if (Objects.equals(stateValue, "Pending"))
-            return new PendingState();
-        if (Objects.equals(stateValue, "Preparation"))
-            return new PreparationState();
-        if (Objects.equals(stateValue, "Ready"))
-            return new ReadyState();
-        if (Objects.equals(stateValue, "Delivered"))
-            return new DeliveredState();
-        return new CustomerChoosingState();
+        return OrderState.fromValue(stateValue);
     }
 
     @Override
