@@ -3,15 +3,15 @@ package businessLogic;
 import dao.DAO;
 import domainModel.Person;
 
-public abstract class PersonController<T extends Person> {
+public abstract class PersonService<T extends Person> {
     private final DAO<T,String> dao;
 
     /**
-     * Builds a base controller with the given DAO.
+     * Builds a base service with the given DAO.
      *
      * @param dao DAO used to manage people.
      */
-    protected PersonController(DAO<T, String> dao) {
+    protected PersonService(DAO<T, String> dao) {
         this.dao = dao;
     }
 

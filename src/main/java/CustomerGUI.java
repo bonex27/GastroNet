@@ -49,7 +49,7 @@ public class CustomerGUI extends AbstractGastroNetFrame {
         JButton addCustomerButton = new JButton("Registra cliente");
 
         addCustomerButton.addActionListener(e -> runAction(() -> {
-            context.customerController.addCustomer(
+            context.customerService.addCustomer(
                     firstNameField.getText(),
                     lastNameField.getText(),
                     cfField.getText(),
@@ -110,7 +110,7 @@ public class CustomerGUI extends AbstractGastroNetFrame {
             if (customerCf == null) {
                 throw new IllegalArgumentException("Seleziona prima un cliente.");
             }
-            int orderId = context.orderController.createOrder(customerCf);
+            int orderId = context.orderService.createOrder(customerCf);
             log("Creato ordine #" + orderId + " per " + customerCf);
             refreshCustomerOrdersView();
         }));
@@ -128,7 +128,7 @@ public class CustomerGUI extends AbstractGastroNetFrame {
         addProductButton.addActionListener(e -> runAction(() -> {
             int orderId = extractId((String) orderCombo.getSelectedItem());
             int productId = extractId((String) productCombo.getSelectedItem());
-            context.orderController.addProductToOrder(productId, orderId);
+            context.orderService.addProductToOrder(productId, orderId);
             log("Prodotto " + productId + " aggiunto all'ordine " + orderId);
             refreshCustomerOrdersView();
             fillProductsArea(productsArea);
@@ -137,7 +137,7 @@ public class CustomerGUI extends AbstractGastroNetFrame {
         removeProductButton.addActionListener(e -> runAction(() -> {
             int orderId = extractId((String) orderCombo.getSelectedItem());
             int productId = extractId((String) productCombo.getSelectedItem());
-            context.orderController.removeProductFromOrder(productId, orderId);
+            context.orderService.removeProductFromOrder(productId, orderId);
             log("Prodotto " + productId + " rimosso dall'ordine " + orderId);
             refreshCustomerOrdersView();
             fillProductsArea(productsArea);
@@ -145,7 +145,7 @@ public class CustomerGUI extends AbstractGastroNetFrame {
 
         confirmButton.addActionListener(e -> runAction(() -> {
             int orderId = extractId((String) orderCombo.getSelectedItem());
-            context.orderController.confirmOrder(orderId);
+            context.orderService.confirmOrder(orderId);
             log("Ordine " + orderId + " confermato");
             refreshCustomerOrdersView();
         }));

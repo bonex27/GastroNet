@@ -8,8 +8,8 @@ import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class CustomerControllerTest {
-    private CustomerController customerController;
+public class CustomerServiceTest {
+    private CustomerService customerService;
     private Customer testCustomer;
 
     @BeforeAll
@@ -25,7 +25,7 @@ public class CustomerControllerTest {
         Database.getConnection().prepareStatement("DELETE FROM sqlite_sequence").executeUpdate();
 
         SQLiteCustomerDAO customerDAO = new SQLiteCustomerDAO();
-        customerController = new CustomerController(customerDAO);
+        customerService = new CustomerService(customerDAO);
         testCustomer = new Customer("Pietro","Bonechi","AAA","Card");
         customerDAO.insert(testCustomer);
 
@@ -33,35 +33,35 @@ public class CustomerControllerTest {
 
     @Test
     void getCustomerTest() throws Exception {
-        Customer customer = customerController.getPerson("AAA");
+        Customer customer = customerService.getPerson("AAA");
         Assertions.assertNotNull(customer);
         Assertions.assertEquals("AAA",customer.getCf());
     }
 
    @Test
     void addCustomerTest() throws Exception {
-       Assertions.assertDoesNotThrow(() ->customerController.addCustomer("Mario","Rossi","MMM","Cash"));
-       Customer insertedCustomer = customerController.getPerson("MMM");
+       Assertions.assertDoesNotThrow(() ->customerService.addCustomer("Mario","Rossi","MMM","Cash"));
+       Customer insertedCustomer = customerService.getPerson("MMM");
        Assertions.assertNotNull(insertedCustomer);
        Assertions.assertEquals("MMM",insertedCustomer.getCf());
    }
    @Test
    void addCustomerTest_alreadyExisting()
    {
-       Assertions.assertThrows(Exception.class,() ->customerController.addCustomer("Pietro","Bonechi","AAA","Cash"));
+       Assertions.assertThrows(Exception.class,() ->customerService.addCustomer("Pietro","Bonechi","AAA","Cash"));
    }
 
     @Test
     void deleteCustomerTest_ResultTrue() throws Exception {
-        boolean result = customerController.deletePerson("AAA");
-        Customer c = customerController.getPerson("AAA");
+        boolean result = customerService.deletePerson("AAA");
+        Customer c = customerService.getPerson("AAA");
         Assertions.assertTrue(result);
         Assertions.assertNull(c);
 
     }
     @Test
     void deleteCustomerTest_ResultFalse() throws Exception {
-        boolean result = customerController.deletePerson("CCC");
+        boolean result = customerService.deletePerson("CCC");
         Assertions.assertFalse(result);
 
     }

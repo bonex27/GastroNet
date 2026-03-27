@@ -12,9 +12,9 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AttendantControllerTest {
+public class AttendantServiceTest {
 
-    private AttendantController attendantController;
+    private AttendantService attendantService;
     private Attendant attendant;
 
     @BeforeAll
@@ -29,18 +29,18 @@ public class AttendantControllerTest {
         Database.getConnection().prepareStatement("DELETE FROM sqlite_sequence").executeUpdate();
 
         SQLiteAttendantDAO attendantDAO = new SQLiteAttendantDAO();
-        attendantController = new AttendantController(attendantDAO);
+        attendantService = new AttendantService(attendantDAO);
         attendant = new Attendant("Pietro", "Bonechi", "AAA", "ITAAA1234");
         attendantDAO.insert(attendant);
     }
 
     @Test
     void testAddAttendant_Success() throws Exception {
-        String cf = attendantController.addAttendant("Mario", "Rossi", "RSSMRA80A01H501X", "IT60X0542811101000000123456");
+        String cf = attendantService.addAttendant("Mario", "Rossi", "RSSMRA80A01H501X", "IT60X0542811101000000123456");
 
         assertEquals("RSSMRA80A01H501X", cf);
 
-        Attendant retrieved = attendantController.getPerson(cf);
+        Attendant retrieved = attendantService.getPerson(cf);
         assertNotNull(retrieved);
         assertEquals("Mario", retrieved.getFirstName());
         assertEquals("Rossi", retrieved.getLastName());
@@ -49,22 +49,22 @@ public class AttendantControllerTest {
     @Test
     void testAddAttendant_DuplicateCF_ThrowsException() {
         assertThrows(Exception.class, () ->
-                attendantController.addAttendant("Pietro", "Bonechi", "AAA", "ITBBB5678")
+                attendantService.addAttendant("Pietro", "Bonechi", "AAA", "ITBBB5678")
         );
     }
 
     @Test
     void testDeleteAttendant_Success() throws Exception {
-        boolean result = attendantController.deletePerson("AAA");
+        boolean result = attendantService.deletePerson("AAA");
         assertTrue(result);
 
-        Attendant retrieved = attendantController.getPerson("AAA");
+        Attendant retrieved = attendantService.getPerson("AAA");
         assertNull(retrieved);
     }
 
     @Test
     void testGetAttendant_Success() throws Exception {
-        Attendant retrieved = attendantController.getPerson("AAA");
+        Attendant retrieved = attendantService.getPerson("AAA");
 
         assertNotNull(retrieved);
         assertEquals("Pietro", retrieved.getFirstName());
@@ -74,7 +74,7 @@ public class AttendantControllerTest {
 
     @Test
     void testGetAttendant_NotFound_ReturnsNull() throws Exception {
-        Attendant retrieved = attendantController.getPerson("NONEXISTENT");
+        Attendant retrieved = attendantService.getPerson("NONEXISTENT");
         assertNull(retrieved);
     }
 }

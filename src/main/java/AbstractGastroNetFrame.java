@@ -75,7 +75,7 @@ abstract class AbstractGastroNetFrame extends JFrame {
         if (customerCf == null || customerCf.isBlank()) {
             return;
         }
-        for (var order : context.orderController.getOrders(customerCf)) {
+        for (var order : context.orderService.getOrders(customerCf)) {
             comboBox.addItem(formatOrder(order));
         }
     }
@@ -89,7 +89,7 @@ abstract class AbstractGastroNetFrame extends JFrame {
     }
 
     protected void fillProductsArea(JTextArea area) throws Exception {
-        List<Product> products = context.productController.GetProductList();
+        List<Product> products = context.productService.GetProductList();
         StringBuilder builder = new StringBuilder();
         for (Product product : products) {
             builder.append(product.getId())
@@ -102,7 +102,7 @@ abstract class AbstractGastroNetFrame extends JFrame {
 
     protected void fillOrdersArea(JTextArea area) throws Exception {
         StringBuilder builder = new StringBuilder();
-        for (Order order : context.orderController.getOrders()) {
+        for (Order order : context.orderService.getOrders()) {
             builder.append(order).append("\n\n");
         }
         area.setText(builder.toString());
@@ -111,7 +111,7 @@ abstract class AbstractGastroNetFrame extends JFrame {
     protected void fillOrdersAreaForCustomer(String customerCf, JTextArea area) throws Exception {
         StringBuilder builder = new StringBuilder();
         if (customerCf != null && !customerCf.isBlank()) {
-            for (Order order : context.orderController.getOrders(customerCf)) {
+            for (Order order : context.orderService.getOrders(customerCf)) {
                 builder.append(order).append("\n\n");
             }
         }

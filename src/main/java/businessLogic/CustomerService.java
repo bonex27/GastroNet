@@ -3,14 +3,14 @@ package businessLogic;
 import dao.DAO;
 import domainModel.Customer;
 
-public class CustomerController extends PersonController<Customer>{
+public class CustomerService extends PersonService<Customer> {
 
     /**
-     * Builds a controller with the given customer DAO.
+     * Builds a service with the given customer DAO.
      *
      * @param dao DAO used to manage customers.
      */
-    public CustomerController(DAO<Customer, String> dao) {
+    public CustomerService(DAO<Customer, String> dao) {
         super(dao);
     }
 

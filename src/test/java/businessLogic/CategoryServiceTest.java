@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class CategoryControllerTest {
+public class CategoryServiceTest {
 
-    private CategoryController categoryController;
+    private CategoryService categoryService;
 
     @BeforeAll
     static void initDb() throws SQLException, IOException {
@@ -29,12 +29,12 @@ public class CategoryControllerTest {
         Database.getConnection().prepareStatement("DELETE FROM sqlite_sequence").executeUpdate();
 
         SQLiteCategoryDAO categoryDAO = new SQLiteCategoryDAO();
-        categoryController = new CategoryController(categoryDAO);
+        categoryService = new CategoryService(categoryDAO);
     }
 
     @Test
     void testCreateCategory_Success() throws SQLException {
-        Category category = categoryController.CreateCategory("Primi");
+        Category category = categoryService.CreateCategory("Primi");
 
         assertNotNull(category);
         assertEquals("Primi", category.getDescription());
@@ -42,17 +42,17 @@ public class CategoryControllerTest {
 
     @Test
     void testCreateCategory_Multiple() throws SQLException {
-        categoryController.CreateCategory("Primi");
-        categoryController.CreateCategory("Secondi");
-        categoryController.CreateCategory("Dolci");
+        categoryService.CreateCategory("Primi");
+        categoryService.CreateCategory("Secondi");
+        categoryService.CreateCategory("Dolci");
 
-        List<Category> categories = categoryController.GetAllCategories();
+        List<Category> categories = categoryService.GetAllCategories();
         assertEquals(3, categories.size());
     }
 
     @Test
     void testCreateCategory_EmptyDescription() throws SQLException {
-        Category category = categoryController.CreateCategory("");
+        Category category = categoryService.CreateCategory("");
         assertNotNull(category);
         assertEquals("", category.getDescription());
     }

@@ -11,20 +11,20 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-public class OrderController {
+public class OrderService {
 
     private final OrderDAO orderDAO;
     private final ProductDAO productDAO;
     private final CustomerDAO customerDAO;
 
     /**
-     * Builds a controller with the given DAOs.
+     * Builds a service with the given DAOs.
      *
      * @param orderDAO DAO used to manage orders.
      * @param productDAO DAO used to manage products.
      * @param customerDAO DAO used to manage customers.
      */
-    public OrderController(OrderDAO orderDAO, ProductDAO productDAO, CustomerDAO customerDAO) {
+    public OrderService(OrderDAO orderDAO, ProductDAO productDAO, CustomerDAO customerDAO) {
         this.orderDAO = orderDAO;
         this.productDAO = productDAO;
         this.customerDAO = customerDAO;

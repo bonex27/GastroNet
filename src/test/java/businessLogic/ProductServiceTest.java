@@ -12,10 +12,10 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ProductControllerTest {
+public class ProductServiceTest {
 
-    private ProductController productController;
-    private CategoryController categoryController;
+    private ProductService productService;
+    private CategoryService categoryService;
     private Category category;
 
     @BeforeAll
@@ -34,17 +34,17 @@ public class ProductControllerTest {
         SQLiteProductDAO productDAO = new SQLiteProductDAO(categoryDAO);
 
 
-        productController = new ProductController(productDAO);
-        categoryController = new CategoryController(categoryDAO);
+        productService = new ProductService(productDAO);
+        categoryService = new CategoryService(categoryDAO);
 
-        category = categoryController.CreateCategory("Primi");
+        category = categoryService.CreateCategory("Primi");
     }
 
     @Test
     void testAddProduct_Success() throws Exception {
-        int productId = productController.AddProduct("Lasagna", "Pasta al forno", 9.99, category, 10);
+        int productId = productService.AddProduct("Lasagna", "Pasta al forno", 9.99, category, 10);
 
-        Product retrieved = productController.getProduct(productId);
+        Product retrieved = productService.getProduct(productId);
         assertNotNull(retrieved);
         assertEquals("Lasagna", retrieved.getName());
         assertEquals("Pasta al forno", retrieved.getDescription());
@@ -54,72 +54,72 @@ public class ProductControllerTest {
 
     @Test
     void testGetProduct_Success() throws Exception {
-        int productId = productController.AddProduct("Risotto", "Risotto ai funghi", 7.99, category, 50);
+        int productId = productService.AddProduct("Risotto", "Risotto ai funghi", 7.99, category, 50);
 
-        Product retrieved = productController.getProduct(productId);
+        Product retrieved = productService.getProduct(productId);
         assertNotNull(retrieved);
         assertEquals(productId, retrieved.getId());
     }
 
     @Test
     void testGetProduct_NotFound_ReturnsNull() throws Exception {
-        Product retrieved = productController.getProduct(9999);
+        Product retrieved = productService.getProduct(9999);
         assertNull(retrieved);
     }
 
     @Test
     void testDeleteProduct_Success() throws Exception {
-        int productId = productController.AddProduct("Polpette", "Al sugo", 6.50, category, 20);
+        int productId = productService.AddProduct("Polpette", "Al sugo", 6.50, category, 20);
 
-        boolean result = productController.deleteProduct(productId);
+        boolean result = productService.deleteProduct(productId);
         assertTrue(result);
 
-        Product retrieved = productController.getProduct(productId);
+        Product retrieved = productService.getProduct(productId);
         assertNull(retrieved);
     }
 
     @Test
     void testIncreaseProductQuantity_Success() throws Exception {
-        int productId = productController.AddProduct("Insalata", "Mista", 4.50, category, 15);
+        int productId = productService.AddProduct("Insalata", "Mista", 4.50, category, 15);
 
-        productController.IncreaseProductQuantity(productId, 10);
+        productService.IncreaseProductQuantity(productId, 10);
 
-        Product retrieved = productController.getProduct(productId);
+        Product retrieved = productService.getProduct(productId);
         assertEquals(25, retrieved.getStock());
     }
 
     @Test
     void testDecreaseProductQuantity_Success() throws Exception {
-        int productId = productController.AddProduct("Pane", "Integrale", 1.20, category, 30);
+        int productId = productService.AddProduct("Pane", "Integrale", 1.20, category, 30);
 
-        boolean result = productController.DecreaseProductQuantity(productId, 5);
+        boolean result = productService.DecreaseProductQuantity(productId, 5);
         assertTrue(result);
 
-        Product retrieved = productController.getProduct(productId);
+        Product retrieved = productService.getProduct(productId);
         assertEquals(25, retrieved.getStock());
     }
 
     @Test
     void testDecreaseProductQuantity_InsufficientStock_ReturnsFalse() throws Exception {
-        int productId = productController.AddProduct("Mela", "Golden", 0.90, category, 3);
+        int productId = productService.AddProduct("Mela", "Golden", 0.90, category, 3);
 
-        boolean result = productController.DecreaseProductQuantity(productId, 10);
+        boolean result = productService.DecreaseProductQuantity(productId, 10);
         assertFalse(result);
     }
 
     @Test
     void testGetProductList_Success() throws Exception {
-        productController.AddProduct("Pasta", "Al pomodoro", 6.0, category, 5);
-        productController.AddProduct("Zuppa", "Di legumi", 5.0, category, 10);
-        productController.AddProduct("Torta", "Di mele", 4.0, category, 15);
+        productService.AddProduct("Pasta", "Al pomodoro", 6.0, category, 5);
+        productService.AddProduct("Zuppa", "Di legumi", 5.0, category, 10);
+        productService.AddProduct("Torta", "Di mele", 4.0, category, 15);
 
-        List<Product> products = productController.GetProductList();
+        List<Product> products = productService.GetProductList();
         assertEquals(3, products.size());
     }
 
     @Test
     void testGetProductList_Empty() throws Exception {
-        List<Product> products = productController.GetProductList();
+        List<Product> products = productService.GetProductList();
         assertEquals(0, products.size());
     }
 }

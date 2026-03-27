@@ -1,8 +1,8 @@
-import businessLogic.AttendantController;
-import businessLogic.CategoryController;
-import businessLogic.CustomerController;
-import businessLogic.OrderController;
-import businessLogic.ProductController;
+import businessLogic.AttendantService;
+import businessLogic.CategoryService;
+import businessLogic.CustomerService;
+import businessLogic.OrderService;
+import businessLogic.ProductService;
 import dao.AttendantDAO;
 import dao.CategoryDAO;
 import dao.CustomerDAO;
@@ -22,11 +22,11 @@ public class GastroNetContext {
     final ProductDAO productDAO;
     final OrderDAO orderDAO;
 
-    final CustomerController customerController;
-    final AttendantController attendantController;
-    final CategoryController categoryController;
-    final ProductController productController;
-    final OrderController orderController;
+    final CustomerService customerService;
+    final AttendantService attendantService;
+    final CategoryService categoryService;
+    final ProductService productService;
+    final OrderService orderService;
 
     public GastroNetContext() throws Exception {
         Database.setDatabase("main.db");
@@ -38,10 +38,10 @@ public class GastroNetContext {
         productDAO = new SQLiteProductDAO(categoryDAO);
         orderDAO = new SQLiteOrderDAO(customerDAO, productDAO);
 
-        customerController = new CustomerController(customerDAO);
-        attendantController = new AttendantController(attendantDAO);
-        categoryController = new CategoryController(categoryDAO);
-        productController = new ProductController(productDAO);
-        orderController = new OrderController(orderDAO, productDAO, customerDAO);
+        customerService = new CustomerService(customerDAO);
+        attendantService = new AttendantService(attendantDAO);
+        categoryService = new CategoryService(categoryDAO);
+        productService = new ProductService(productDAO);
+        orderService = new OrderService(orderDAO, productDAO, customerDAO);
     }
 }

@@ -8,15 +8,15 @@ import domainModel.Search.SearchQuery;
 
 import java.util.List;
 
-public class ProductController {
+public class ProductService {
     private final ProductDAO productDAO;
 
     /**
-     * Builds a controller with the given product data access.
+     * Builds a service with the given product data access.
      *
      * @param productDAO DAO used to load and persist products.
      */
-    public ProductController(ProductDAO productDAO) {
+    public ProductService(ProductDAO productDAO) {
         this.productDAO = productDAO;
     }
 

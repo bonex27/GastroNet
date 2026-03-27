@@ -6,15 +6,15 @@ import domainModel.Category;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CategoryController {
+public class CategoryService {
     private final CategoryDAO categoryDAO;
 
     /**
-     * Builds a controller with the given category DAO.
+     * Builds a service with the given category DAO.
      *
      * @param categoryDAO DAO used to manage categories.
      */
-    public CategoryController(CategoryDAO categoryDAO) {
+    public CategoryService(CategoryDAO categoryDAO) {
         this.categoryDAO = categoryDAO;
     }
 

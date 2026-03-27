@@ -49,7 +49,7 @@ public class AttendantGUI extends AbstractGastroNetFrame {
         JButton addAttendantButton = new JButton("Aggiungi addetto");
 
         addAttendantButton.addActionListener(e -> runAction(() -> {
-            context.attendantController.addAttendant(
+            context.attendantService.addAttendant(
                     attendantName.getText(),
                     attendantSurname.getText(),
                     attendantCf.getText(),
@@ -74,7 +74,7 @@ public class AttendantGUI extends AbstractGastroNetFrame {
         JButton addCategoryButton = new JButton("Aggiungi categoria");
 
         addCategoryButton.addActionListener(e -> runAction(() -> {
-            context.categoryController.CreateCategory(categoryDescription.getText());
+            context.categoryService.CreateCategory(categoryDescription.getText());
             log("Categoria aggiunta: " + categoryDescription.getText());
             refreshCategories(categoryCombo);
         }));
@@ -97,7 +97,7 @@ public class AttendantGUI extends AbstractGastroNetFrame {
                 throw new IllegalArgumentException("Inserisci prima una categoria.");
             }
             Category category = context.categoryDAO.get(selectedCategory);
-            int productId = context.productController.AddProduct(
+            int productId = context.productService.AddProduct(
                     productName.getText(),
                     productDescription.getText(),
                     Double.parseDouble(productPrice.getText()),
@@ -167,9 +167,9 @@ public class AttendantGUI extends AbstractGastroNetFrame {
         runAction(() -> {
             int orderId = extractId((String) orderCombo.getSelectedItem());
             switch (targetState) {
-                case "Preparation" -> context.orderController.startPreparation(orderId);
-                case "Ready" -> context.orderController.endPreparation(orderId);
-                case "Delivered" -> context.orderController.collectOrder(orderId);
+                case "Preparation" -> context.orderService.startPreparation(orderId);
+                case "Ready" -> context.orderService.endPreparation(orderId);
+                case "Delivered" -> context.orderService.collectOrder(orderId);
                 default -> throw new IllegalArgumentException("Stato non supportato: " + targetState);
             }
             log("Ordine " + orderId + " aggiornato a " + targetState);
