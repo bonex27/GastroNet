@@ -1,10 +1,10 @@
 package dao;
 
+import dao.query.DecoratorSearchPrice;
+import dao.query.DecoratorSearchStock;
+import dao.query.Search;
+import dao.query.SearchConcrete;
 import domainModel.Product;
-import domainModel.Search.DecoratorSearchPrice;
-import domainModel.Search.DecoratorSearchStock;
-import domainModel.Search.Search;
-import domainModel.Search.SearchConcrete;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package domainModel.Search;
+package dao.query;
 
 import java.util.Collections;
 import java.util.List;

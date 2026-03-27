@@ -1,10 +1,10 @@
 package businessLogic;
 
 import dao.ProductDAO;
+import dao.query.Search;
+import dao.query.SearchQuery;
 import domainModel.Category;
 import domainModel.Product;
-import domainModel.Search.Search;
-import domainModel.Search.SearchQuery;
 
 import java.util.List;
 

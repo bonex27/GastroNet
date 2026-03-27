@@ -1,4 +1,4 @@
-package domainModel.Search;
+package dao.query;
 
 public class DecoratorSearchName extends BaseDecoratorSearch {
     private final String name;

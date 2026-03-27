@@ -1,8 +1,8 @@
 package dao;
 
+import dao.query.SearchQuery;
 import domainModel.Category;
 import domainModel.Product;
-import domainModel.Search.SearchQuery;
 
 import java.sql.*;
 import java.util.ArrayList;

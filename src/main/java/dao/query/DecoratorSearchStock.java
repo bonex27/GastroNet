@@ -1,4 +1,4 @@
-package domainModel.Search;
+package dao.query;
 
 public class DecoratorSearchStock extends BaseDecoratorSearch {
     private final boolean stock;

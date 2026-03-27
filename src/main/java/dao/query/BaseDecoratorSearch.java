@@ -1,8 +1,4 @@
-package domainModel.Search;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+package dao.query;
 
 public abstract class BaseDecoratorSearch implements Search {
     private final Search decoratedSearch;
@@ -14,8 +10,8 @@ public abstract class BaseDecoratorSearch implements Search {
     protected SearchQuery appendCondition(SearchQuery base, String condition, Object... params) {
         String sql = base.getSql();
         String nextSql = sql + (sql.contains(" WHERE ") ? " AND " : " WHERE ") + condition;
-        List<Object> nextParams = new ArrayList<>(base.getParams());
-        nextParams.addAll(Arrays.asList(params));
+        java.util.List<Object> nextParams = new java.util.ArrayList<>(base.getParams());
+        nextParams.addAll(java.util.Arrays.asList(params));
         return new SearchQuery(nextSql, nextParams);
     }
 

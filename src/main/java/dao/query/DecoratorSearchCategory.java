@@ -1,4 +1,4 @@
-package domainModel.Search;
+package dao.query;
 
 public class DecoratorSearchCategory extends BaseDecoratorSearch {
     private final String category;

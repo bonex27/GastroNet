@@ -1,4 +1,4 @@
-package domainModel.Search;
+package dao.query;
 
 public class DecoratorSearchPrice extends BaseDecoratorSearch {
     private final float minPrice;
